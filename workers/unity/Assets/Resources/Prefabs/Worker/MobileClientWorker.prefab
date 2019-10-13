@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxConnectionAttempts: 3
-  ipAddress: 
+  level: {fileID: 7729480279259967630, guid: 75eddfaf2fa1c5d4893b2dfc05415a98, type: 3}
+  ipAddress: 192.168.86.66

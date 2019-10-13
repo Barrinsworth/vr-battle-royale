@@ -2,19 +2,21 @@ using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Mobile;
 using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.GameObjectCreation;
 using UnityEngine;
 
 namespace BlankProject
 {
-    public class MobileClientWorkerConnector : WorkerConnector, MobileConnectionFlowInitializer.IMobileSettingsProvider
+    public class MobileClientWorkerConnector : UnityClientConnector, MobileConnectionFlowInitializer.IMobileSettingsProvider
     {
 #pragma warning disable 649
         [SerializeField] private string ipAddress;
 #pragma warning restore 649
 
-        public const string WorkerType = "MobileClient";
+        public new const string WorkerType = "MobileClient";
 
-        public async void Start()
+        #region Unity Life Cycle
+        private async void Start()
         {
             var connParams = CreateConnectionParameters(WorkerType, new MobileConnectionParametersInitializer());
 
@@ -41,11 +43,19 @@ namespace BlankProject
 
             await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
         }
+        #endregion
 
-        protected override void HandleWorkerConnectionEstablished()
+        #region Overrides
+        protected override string GetAuthPlayerPrefabPath()
         {
-            PlayerLifecycleHelper.AddClientSystems(Worker.World);
+            return "Prefabs/MobileClient/Authoritative/Player";
         }
+
+        protected override string GetNonAuthPlayerPrefabPath()
+        {
+            return "Prefabs/MobileClient/NonAuthoritative/Player";
+        }
+        #endregion
 
         public Option<string> GetReceptionistHostIp()
         {

@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: DeploymentLauncherConfig
   m_EditorClassIdentifier: 
   AssemblyConfig:
-    ProjectName: unity_gdk
-    AssemblyName: blank_assembly
+    ProjectName: alpha_vvr
+    AssemblyName: vr_battle_royale_assembly
     ShouldForceUpload: 0
   DeploymentConfigs:
-  - ProjectName: unity_gdk
-    AssemblyName: blank_assembly
+  - ProjectName: alpha_vvr
+    AssemblyName: vr_battle_royale_assembly
     Deployment:
-      Name: blank_deployment
+      Name: vr_battle_royale_deployment
       SnapshotPath: snapshots/default.snapshot
       LaunchJson: cloud_launch.json
-      Region: 1
+      Region: 0
       Tags: []
     SimulatedPlayerDeploymentConfigs: []
