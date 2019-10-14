@@ -1,0 +1,17 @@
+{
+    "name": "Oculus.SampleFramework.Editor",
+    "references": [
+        "GUID:b30b78a12b9abda40b9a98b03007064f",
+        "GUID:f64c9ebcd7899c3448a08dc9f9ddbe30"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
