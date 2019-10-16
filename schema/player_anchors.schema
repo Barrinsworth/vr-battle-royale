@@ -1,0 +1,24 @@
+package player;
+
+type Quaternion {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float w = 4;
+}
+
+type Vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+component PlayerAchors {
+  id = 21001;
+  Vector3 hmd_position = 1;
+  Quaternion hmd_rotation = 2;
+  Vector3 right_hand_position = 3;
+  Quaternion right_hand_rotation = 4;
+  Vector3 left_hand_position = 5;
+  Quaternion left_hand_rotation = 6;
+}

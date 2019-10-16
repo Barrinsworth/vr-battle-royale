@@ -6,6 +6,7 @@
         "Improbable.Gdk.Mobile",
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.GameObjectCreation",
+        "Improbable.Gdk.TransformSynchronization",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics"
