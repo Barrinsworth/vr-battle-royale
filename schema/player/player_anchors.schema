@@ -1,0 +1,13 @@
+package vitruvius.generated.player;
+import "vector3.schema";
+import "quaternion.schema";
+
+component PlayerAchors {
+  id = 21001;
+  Vector3 hmd_position = 1;
+  Quaternion hmd_rotation = 2;
+  Vector3 right_hand_position = 3;
+  Quaternion right_hand_rotation = 4;
+  Vector3 left_hand_position = 5;
+  Quaternion left_hand_rotation = 6;
+}
