@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Scenes/Singleplayer/ShootingRange.unity
+    guid: 573f37633c400304bba3ba03da58043d
+  - enabled: 1
     path: Assets/_Scenes/Multiplayer/ClientScene.unity
     guid: e9d72ec001e1f42b79ccca8467dcca90
   - enabled: 1

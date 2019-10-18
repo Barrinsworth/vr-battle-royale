@@ -1,0 +1,15 @@
+{
+    "name": "VRBattleRoyale.Singleplayer",
+    "references": [
+        "GUID:f0a9197da83c27947b1b24f93b927d5b",
+        "GUID:e9682e326ca80cb46bde4e2ab93adc35"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
