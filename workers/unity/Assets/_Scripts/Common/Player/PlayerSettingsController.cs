@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VRBattleRoyale.Common
+namespace VRBattleRoyale.Common.Player
 {
     public class PlayerSettingsController : MonoBehaviour
     {

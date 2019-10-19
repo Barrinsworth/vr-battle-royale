@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VRBattleRoyale.Common
+namespace VRBattleRoyale.Common.Player
 {
     public class OculusControllerInput : MonoBehaviour, IControllerInput
     {
+        private const float THUMBSTICK_DEADZONE = 0.1f;
+
         [Header("--Oculus Controller Input--")]
         [SerializeField]
         private OVRInput.Controller ovrController = OVRInput.Controller.None;
@@ -97,6 +99,22 @@ namespace VRBattleRoyale.Common
 
         public float PinkyPressure => OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, ovrController);
 
-        public Vector2 ThumbstickPrimary => OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, ovrController);
+        public Vector2 ThumbstickPrimary
+        {
+            get
+            {
+                var thumbstickInput = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, ovrController);
+
+                if(thumbstickInput.x > -THUMBSTICK_DEADZONE && thumbstickInput.x < THUMBSTICK_DEADZONE &&
+                    thumbstickInput.y > -THUMBSTICK_DEADZONE && thumbstickInput.y < THUMBSTICK_DEADZONE)
+                {
+                    return Vector2.zero;
+                }
+                else
+                {
+                    return OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, ovrController);
+                }
+            }
+        }
     }
 }

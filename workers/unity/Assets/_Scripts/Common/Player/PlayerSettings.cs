@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VRBattleRoyale.Common
+namespace VRBattleRoyale.Common.Player
 {
     [CreateAssetMenu(fileName = "New Player Settings", menuName = "ScriptableObjects/Common/Player Settings")]
     public class PlayerSettings : ScriptableObject

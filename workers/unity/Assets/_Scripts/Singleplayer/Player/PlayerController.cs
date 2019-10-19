@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using VRBattleRoyale.Common;
+using VRBattleRoyale.Common.Player;
 
 namespace VRBattleRoyale.SinglePlayer
 {

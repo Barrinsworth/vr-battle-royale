@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRBattleRoyale.Common;
 
-namespace VRBattleRoyale.SinglePlayer
+namespace VRBattleRoyale.Common.Player
 {
     public class OculusVRRig : VRRig
     {

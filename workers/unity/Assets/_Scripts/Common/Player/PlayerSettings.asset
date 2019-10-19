@@ -16,3 +16,4 @@ MonoBehaviour:
   RotationMode: 0
   SnapRotationDegrees: 45
   SmoothRotationSpeed: 5
+  InteractionButtonMode: 0
