@@ -6,6 +6,9 @@ namespace VRBattleRoyale.Common.Player
 {
     public class PlayerSettingsController : MonoBehaviour
     {
+        private static double MIN_SMOOTH_ROTATION = 0.5;
+        private static double MAX_SMOOTH_ROTATION = 10;
+
         private static PlayerSettingsController instance;
 
         public static PlayerSettingsController Instance { get { return instance; } }
@@ -19,6 +22,8 @@ namespace VRBattleRoyale.Common.Player
         public SettingsChangedEvent OnSnapRotationDegreesChanged;
         public SettingsChangedEvent OnSmoothRotationSpeedChanged;
         public SettingsChangedEvent OnInteractionButtonModeChanged;
+        public SettingsChangedEvent OnMovementOrientationModeChanged;
+        public SettingsChangedEvent OnRoomSetupChanged;
 
         public HandednessEnum MoveHand
         {
@@ -64,17 +69,15 @@ namespace VRBattleRoyale.Common.Player
                 }
             }
         }
-        public float SmoothRotationSpeed
+        public double SmoothRotationSpeed
         {
             get { return playerSettings.SmoothRotationSpeed; }
             set
             {
-                if (value < 1 || value > 10)
+                if (value < MIN_SMOOTH_ROTATION || value > MAX_SMOOTH_ROTATION)
                 {
                     return;
                 }
-
-                playerSettings.SmoothRotationSpeed = value;
 
                 if (OnSmoothRotationSpeedChanged != null)
                 {
@@ -92,6 +95,32 @@ namespace VRBattleRoyale.Common.Player
                 if (OnInteractionButtonModeChanged != null)
                 {
                     OnInteractionButtonModeChanged();
+                }
+            }
+        }
+        public MovementOrientationModeEnum MovementOrientationMode
+        {
+            get { return playerSettings.MovementOrientationMode; }
+            set
+            {
+                playerSettings.MovementOrientationMode = value;
+
+                if(OnMovementOrientationModeChanged != null)
+                {
+                    OnMovementOrientationModeChanged();
+                }
+            }
+        }
+        public RoomSetupEnum RoomSetup
+        {
+            get { return playerSettings.RoomSetup; }
+            set
+            {
+                playerSettings.RoomSetup = value;
+
+                if(OnRoomSetupChanged != null)
+                {
+                    OnRoomSetupChanged();
                 }
             }
         }

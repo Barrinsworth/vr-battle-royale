@@ -10,7 +10,9 @@ namespace VRBattleRoyale.Common.Player
         public HandednessEnum MoveHand = HandednessEnum.Left;
         public RotationModeEnum RotationMode = RotationModeEnum.Snap;
         public int SnapRotationDegrees = 30;
-        public float SmoothRotationSpeed = 5;
+        public double SmoothRotationSpeed = 5;
         public InteractionButtonModeEnum InteractionButtonMode = InteractionButtonModeEnum.Grip;
+        public MovementOrientationModeEnum MovementOrientationMode = MovementOrientationModeEnum.Hand;
+        public RoomSetupEnum RoomSetup = RoomSetupEnum.Roomscale;
     }
 }

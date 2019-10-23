@@ -11,10 +11,25 @@ namespace VRBattleRoyale.Common.Player
         [SerializeField] protected Transform leftHandAnchorTransform;
         [SerializeField] protected Transform rightHandAnchorTransform;
 
+        public Transform MoveHand
+        {
+            get
+            {
+                if(PlayerSettingsController.Instance.MoveHand == HandednessEnum.Left)
+                {
+                    return leftHandAnchorTransform;
+                }
+                else
+                {
+                    return rightHandAnchorTransform;
+                }
+            }
+        }
         public abstract IControllerInput LeftHandControllerInput { get; }
-
         public abstract IControllerInput RightHandControllerInput { get; }
         public abstract Vector2 MovementInput { get; }
         public abstract float RotationInput { get; }
+        public abstract bool JumpButtonPressed { get; }
+        public abstract bool CrouchButtonPressed { get; }
     }
 }

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveHand: 0
   RotationMode: 0
-  SnapRotationDegrees: 45
+  SnapRotationDegrees: 30
   SmoothRotationSpeed: 5
   InteractionButtonMode: 0
+  MovementOrientationMode: 1
+  RoomSetup: 0

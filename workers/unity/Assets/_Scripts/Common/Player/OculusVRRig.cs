@@ -43,5 +43,35 @@ namespace VRBattleRoyale.Common.Player
                 }
             }
         }
+
+        public override bool JumpButtonPressed
+        {
+            get
+            {
+                if (PlayerSettingsController.Instance.MoveHand == HandednessEnum.Left)
+                {
+                    return RightHandControllerInput.ButtonOneDown;
+                }
+                else
+                {
+                    return LeftHandControllerInput.ButtonOneDown;
+                }
+            }
+        }
+
+        public override bool CrouchButtonPressed
+        {
+            get
+            {
+                if (PlayerSettingsController.Instance.MoveHand == HandednessEnum.Left)
+                {
+                    return RightHandControllerInput.ButtonTwoDown;
+                }
+                else
+                {
+                    return LeftHandControllerInput.ButtonTwoDown;
+                }
+            }
+        }
     }
 }

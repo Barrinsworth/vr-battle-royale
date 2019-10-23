@@ -17,24 +17,9 @@ namespace VRBattleRoyale.SinglePlayer
         [SerializeField] private VRRig openVRRig;
         [SerializeField] private VRRig playstationVRRig;
 
-        public VRRig CurrentVRRig
-        {
-            get
-            {
-                switch (SessionController.Instance.CurrentHMDType)
-                {
-                    case HMDTypeEnum.OculusQuest:
-                    case HMDTypeEnum.OculusRift:
-                        return oculusRig;
-                    case HMDTypeEnum.OpenVR:
-                        return openVRRig;
-                    case HMDTypeEnum.PlayStationVR:
-                        return playstationVRRig;
-                    default:
-                        return openVRRig;
-                }
-            }
-        }
+        private VRRig currentVRRig;
+
+        public VRRig CurrentVRRig { get { return currentVRRig; } }
 
         #region Unity Life Cycle
         private void Awake()
@@ -50,6 +35,23 @@ namespace VRBattleRoyale.SinglePlayer
             }
 
             instance = this;
+
+            switch (SessionController.Instance.CurrentHMDType)
+            {
+                case HMDTypeEnum.OculusQuest:
+                case HMDTypeEnum.OculusRift:
+                    currentVRRig = oculusRig;
+                    break;
+                case HMDTypeEnum.OpenVR:
+                    currentVRRig = openVRRig;
+                    break;
+                case HMDTypeEnum.PlayStationVR:
+                    currentVRRig = playstationVRRig;
+                    break;
+                default:
+                    currentVRRig = openVRRig;
+                    break;
+            }
 
             CurrentVRRig.gameObject.SetActive(true);
         }
