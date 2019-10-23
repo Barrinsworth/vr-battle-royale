@@ -10,6 +10,8 @@ namespace VRBattleRoyale.SinglePlayer
     {
         [Header("--Player Motor--")]
         [SerializeField] private Mover mover;
+        [SerializeField] private Rigidbody moverRigidbody;
+        [SerializeField] private SphereCollider headCollider;
         [SerializeField] private float movementSpeed = 7f;
         [SerializeField] private float jumpSpeed = 10f;
         [SerializeField] private float jumpDuration = 0.2f;
@@ -23,16 +25,18 @@ namespace VRBattleRoyale.SinglePlayer
         [SerializeField] private float smoothRotationMultiplier = 30;
         [SerializeField] private float snapRotationCooldown = 0.3f;
         [SerializeField] private float crouchDistance = 0.5f;
+        [SerializeField] private float cameraForwardOffset = -0.05f;
 
         private PlayerMotorStateEnum currentMotorState = PlayerMotorStateEnum.Falling;
         private Vector3 momentum = Vector3.zero;
         private Vector3 savedVelocity = Vector3.zero;
         private Vector3 savedMovementVelocity = Vector3.zero;
         private Vector3 savedMoverPosition = Vector3.zero;
+        private Vector3 savedPlayerLocalPosition = Vector3.zero;
         private float jumpStartTime = 0f;
         private float snapRotationTime = 0f;
+        private float crouchTime = 0f;
         private bool crouching = false;
-        private Coroutine resizeColliderCoroutine = null;
 
         private bool jumpPressed = false;
         private bool crouchPressed = false;
@@ -51,16 +55,13 @@ namespace VRBattleRoyale.SinglePlayer
             mover.transform.parent = null;
         }
 
-        private void OnEnable()
-        {
-            //if(resizeColliderCoroutine == null)
-            //{
-            //    resizeColliderCoroutine = StartCoroutine(ResizeColliderCoroutine());
-            //}
-        }
-
         private void Update()
         {
+            var cameraForwardXZ = Camera.main.transform.forward;
+            cameraForwardXZ.y = 0f;
+
+            TeleportPlayerHead(mover.transform.position + (Vector3.up * (mover.colliderHeight - headCollider.radius)) + (cameraForwardXZ.normalized * cameraForwardOffset));
+
             GetInput();
 
             HandleRotation();    
@@ -68,8 +69,16 @@ namespace VRBattleRoyale.SinglePlayer
 
         private void FixedUpdate()
         {
-            TeleportPlayerFeet(mover.transform.position);
+            var deltaPlayerLocalPosition = Camera.main.transform.localPosition - savedPlayerLocalPosition;
+            deltaPlayerLocalPosition.y = 0f;
+
+            moverRigidbody.MovePosition(moverRigidbody.transform.position + (Quaternion.Euler(0f, PlayerController.Instance.transform.eulerAngles.y, 0f) *
+                new Vector3(deltaPlayerLocalPosition.x, 0f, deltaPlayerLocalPosition.z)));
+
+            headCollider.transform.position = Camera.main.transform.position;
+
             //PlayerController.Instance.transform.position += mover.transform.position - savedMoverPosition;
+            ResizeMover();
 
             mover.CheckForGround();
 
@@ -94,64 +103,67 @@ namespace VRBattleRoyale.SinglePlayer
 
             //savedMoverPosition = mover.transform.position;
 
-            jumpPressed = false;
-            crouchPressed = false;
+            ResetInput();
+
+            savedPlayerLocalPosition = Camera.main.transform.localPosition;
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            if (resizeColliderCoroutine != null)
-            {
-                StopCoroutine(resizeColliderCoroutine);
-            }
-            resizeColliderCoroutine = null;
+            OnJump = null;
+            OnLand = null;
         }
         #endregion
 
-        private IEnumerator ResizeColliderCoroutine()
+        private void ResizeMover()
         {
-            while(true)
+            var newMoverColliderHeight = PlayerHeight + headCollider.radius;
+
+            var raycastHit = new RaycastHit();
+            if(Physics.Linecast(mover.transform.position, mover.transform.position + (Vector3.up * newMoverColliderHeight), out raycastHit, mover.sensorLayermask))
             {
-                //if(Camera.main.transform.localPosition.y > mover.colliderHeight)
-                //{
-                //    if (Physics.Linecast(mover.transform.position, new Vector3(mover.transform.position.x,
-                //        Camera.main.transform.position.y, mover.transform.position.z)))
-                //    {
-
-                //    }
-                //}
-
-                mover.colliderHeight = Mathf.Max(PlayerHeight, mover.colliderThickness);
-
-                if(mover.colliderHeight >= stepHeightWorldUnits + mover.colliderThickness)
-                {
-                    mover.stepHeight = stepHeightWorldUnits / mover.colliderHeight;
-                }
-                else
-                {
-                    mover.stepHeight = Mathf.Max((mover.colliderHeight - stepHeightWorldUnits) /
-                        mover.colliderHeight, 0f);
-                }
-
-                mover.RecalculateColliderDimensions();
-
-                yield return new WaitForSecondsRealtime(1f);
+                newMoverColliderHeight = raycastHit.distance - 0.01f;
             }
 
-            resizeColliderCoroutine = null;
+            mover.colliderHeight = Mathf.Max(newMoverColliderHeight, mover.colliderThickness);
+
+            if (mover.colliderHeight >= stepHeightWorldUnits + mover.colliderThickness)
+            {
+                mover.stepHeight = stepHeightWorldUnits / mover.colliderHeight;
+            }
+            else
+            {
+                mover.stepHeight = Mathf.Max((mover.colliderHeight - stepHeightWorldUnits) /
+                    mover.colliderHeight, 0f);
+            }
+
+            mover.RecalculateColliderDimensions();
         }
 
         private void GetInput()
         {
-            jumpPressed = PlayerController.Instance.CurrentVRRig.JumpButtonPressed;
-            crouchPressed = PlayerController.Instance.CurrentVRRig.CrouchButtonPressed;
+            if(!jumpPressed)
+            {
+                jumpPressed = PlayerController.Instance.CurrentVRRig.JumpButtonPressed;
+            }
+            
+            if(!crouchPressed)
+            {
+                crouchPressed = PlayerController.Instance.CurrentVRRig.CrouchButtonPressed;
+            }
+        }
+
+        private void ResetInput()
+        {
+            jumpPressed = false;
+            crouchPressed = false;
         }
 
         private void HandleRotation()
         {
             var rotationInput = PlayerController.Instance.CurrentVRRig.RotationInput;
 
-            if(rotationInput == 0)
+            if (rotationInput == 0)
             {
                 return;
             }
@@ -160,7 +172,7 @@ namespace VRBattleRoyale.SinglePlayer
 
             if(PlayerSettingsController.Instance.RotationMode == RotationModeEnum.Smooth)
             {
-                deltaRotation = (rotationInput * (float)PlayerSettingsController.Instance.SmoothRotationSpeed * smoothRotationMultiplier * Time.deltaTime);
+                deltaRotation = (rotationInput * (float)PlayerSettingsController.Instance.SmoothRotationSpeed * smoothRotationMultiplier * Time.fixedDeltaTime);
             }
             else
             {
@@ -317,17 +329,17 @@ namespace VRBattleRoyale.SinglePlayer
             }
 
             if (currentMotorState == PlayerMotorStateEnum.Sliding)
-                verticalMomentum -= mover.transform.up * slideGravity * Time.deltaTime;
+                verticalMomentum -= mover.transform.up * slideGravity * Time.fixedDeltaTime;
             else
-                verticalMomentum -= mover.transform.up * gravity * Time.deltaTime;
+                verticalMomentum -= mover.transform.up * gravity * Time.fixedDeltaTime;
 
             if (currentMotorState == PlayerMotorStateEnum.Grounded)
                 verticalMomentum = Vector3.zero;
 
             if (IsGrounded)
-                horizontalMomentum = VectorMath.IncrementVectorLengthTowardTargetLength(horizontalMomentum, groundFriction, Time.deltaTime, 0f);
+                horizontalMomentum = VectorMath.IncrementVectorLengthTowardTargetLength(horizontalMomentum, groundFriction, Time.fixedDeltaTime, 0f);
             else
-                horizontalMomentum = VectorMath.IncrementVectorLengthTowardTargetLength(horizontalMomentum, airFriction, Time.deltaTime, 0f);
+                horizontalMomentum = VectorMath.IncrementVectorLengthTowardTargetLength(horizontalMomentum, airFriction, Time.fixedDeltaTime, 0f);
 
             momentum = horizontalMomentum + verticalMomentum;
 
@@ -403,35 +415,17 @@ namespace VRBattleRoyale.SinglePlayer
         private Vector3 CalculateMovementDirection()
         {
             var direction = Vector3.zero;
-            var input = PlayerController.Instance.CurrentVRRig.MovementInput;
 
-            var right = Vector3.zero;
-            var forward = Vector3.zero;
+            var yRotation = 0f;
 
-            if(PlayerSettingsController.Instance.MovementOrientationMode == MovementOrientationModeEnum.Hand)
-            {
-                right = PlayerController.Instance.CurrentVRRig.MoveHand.right;
-                forward = PlayerController.Instance.CurrentVRRig.MoveHand.forward;
-            }
+            if (PlayerSettingsController.Instance.MovementOrientationMode == MovementOrientationModeEnum.Hand)
+                yRotation = PlayerController.Instance.CurrentVRRig.MoveHand.eulerAngles.y;
             else
-            {
-                right = Camera.main.transform.right;
-                forward = Camera.main.transform.forward;
-            }
+                yRotation = Camera.main.transform.eulerAngles.y;
 
-            right.y = 0f;
-            right.Normalize();
+            var movementInput = PlayerController.Instance.CurrentVRRig.MovementInput;
 
-            forward.y = 0f;
-            forward.Normalize();
-
-            direction += right * input.x;
-            direction += forward * input.y;
-
-            if (direction.magnitude > 1f)
-                direction.Normalize();
-
-            return direction;
+            return Quaternion.Euler(0f, yRotation, 0f) * new Vector3(movementInput.x, 0f, movementInput.y);
         }
 
         private bool IsRisingOrFalling()
