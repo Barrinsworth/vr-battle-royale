@@ -15,6 +15,7 @@ namespace VRBattleRoyale.SinglePlayer
         [SerializeField] private float movementSpeed = 7f;
         [SerializeField] private float jumpSpeed = 10f;
         [SerializeField] private float jumpDuration = 0.2f;
+        [SerializeField] private float extraJumpTimeAfterLeavingGround = 0.25f;
         [SerializeField] private float stepHeightWorldUnits = 0.4f;
         [SerializeField] private int slopeLimit = 70;
         [SerializeField] [Range(0f, 1f)] private float airControl = 0.4f;
@@ -36,6 +37,7 @@ namespace VRBattleRoyale.SinglePlayer
         private float jumpStartTime = 0f;
         private float snapRotationTime = 0f;
         private float crouchTime = 0f;
+        private float lastGroundedTime = 0f;
         private bool crouching = false;
 
         private bool jumpPressed = false;
@@ -163,25 +165,11 @@ namespace VRBattleRoyale.SinglePlayer
         {
             var rotationInput = PlayerController.Instance.CurrentVRRig.RotationInput;
 
-            if (rotationInput == 0)
-            {
-                return;
-            }
-
             var deltaRotation = 0f;
 
             if(PlayerSettingsController.Instance.RotationMode == RotationModeEnum.Smooth)
             {
                 deltaRotation = (rotationInput * (float)PlayerSettingsController.Instance.SmoothRotationSpeed * smoothRotationMultiplier * Time.fixedDeltaTime);
-
-                if(rotationInput != 0f)
-                {
-                    PlayerController.Instance.FOVBlinders.FadeBlindersIn();
-                }
-                else
-                {
-                    PlayerController.Instance.FOVBlinders.FadeBlindersOut();
-                }
             }
             else
             {
@@ -235,6 +223,8 @@ namespace VRBattleRoyale.SinglePlayer
                         currentMotorState = PlayerMotorStateEnum.Sliding;
                         break;
                     }
+
+                    lastGroundedTime = Time.time;
 
                     break;
 
@@ -366,7 +356,8 @@ namespace VRBattleRoyale.SinglePlayer
 
         private void HandleJumping()
         {
-            if (currentMotorState == PlayerMotorStateEnum.Grounded)
+            if (currentMotorState == PlayerMotorStateEnum.Grounded || ((currentMotorState == PlayerMotorStateEnum.Falling || currentMotorState == PlayerMotorStateEnum.Sliding) && 
+                Time.time - lastGroundedTime < extraJumpTimeAfterLeavingGround))
             {
                 if (jumpPressed)
                 {
@@ -439,11 +430,11 @@ namespace VRBattleRoyale.SinglePlayer
 
             if (movementInput.x != 0f || movementInput.x != 0f)
             {
-                PlayerController.Instance.FOVBlinders.FadeBlindersIn();
+                PlayerController.Instance.CurrentVRRig.FOVBlinders.FadeBlindersIn();
             }
             else
             {
-                PlayerController.Instance.FOVBlinders.FadeBlindersOut();
+                PlayerController.Instance.CurrentVRRig.FOVBlinders.FadeBlindersOut();
             }
 
             return Quaternion.Euler(0f, yRotation, 0f) * new Vector3(movementInput.x, 0f, movementInput.y);

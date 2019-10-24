@@ -17,12 +17,10 @@ namespace VRBattleRoyale.SinglePlayer
         [SerializeField] private VRRig openVRRig;
         [SerializeField] private VRRig playstationVRRig;
         [SerializeField] private PlayerMotor playerMotor;
-        [SerializeField] private FOVBlinders fovBlinders;
 
         private VRRig currentVRRig;
 
         public VRRig CurrentVRRig { get { return currentVRRig; } }
-        public FOVBlinders FOVBlinders { get { return fovBlinders; } }
 
         #region Unity Life Cycle
         private void Awake()

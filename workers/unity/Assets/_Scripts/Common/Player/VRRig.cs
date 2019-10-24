@@ -10,6 +10,7 @@ namespace VRBattleRoyale.Common.Player
         [SerializeField] protected Transform hmdTransform;
         [SerializeField] protected Transform leftHandAnchorTransform;
         [SerializeField] protected Transform rightHandAnchorTransform;
+        [SerializeField] protected FOVBlinders fovBlinders;
 
         public Transform MoveHand
         {
@@ -25,6 +26,7 @@ namespace VRBattleRoyale.Common.Player
                 }
             }
         }
+        public FOVBlinders FOVBlinders { get { return fovBlinders; } }
         public abstract IControllerInput LeftHandControllerInput { get; }
         public abstract IControllerInput RightHandControllerInput { get; }
         public abstract Vector2 MovementInput { get; }
