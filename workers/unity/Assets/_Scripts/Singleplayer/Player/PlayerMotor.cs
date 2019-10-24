@@ -173,6 +173,15 @@ namespace VRBattleRoyale.SinglePlayer
             if(PlayerSettingsController.Instance.RotationMode == RotationModeEnum.Smooth)
             {
                 deltaRotation = (rotationInput * (float)PlayerSettingsController.Instance.SmoothRotationSpeed * smoothRotationMultiplier * Time.fixedDeltaTime);
+
+                if(rotationInput != 0f)
+                {
+                    PlayerController.Instance.FOVBlinders.FadeBlindersIn();
+                }
+                else
+                {
+                    PlayerController.Instance.FOVBlinders.FadeBlindersOut();
+                }
             }
             else
             {
@@ -415,15 +424,27 @@ namespace VRBattleRoyale.SinglePlayer
         private Vector3 CalculateMovementDirection()
         {
             var direction = Vector3.zero;
-
             var yRotation = 0f;
 
             if (PlayerSettingsController.Instance.MovementOrientationMode == MovementOrientationModeEnum.Hand)
+            {
                 yRotation = PlayerController.Instance.CurrentVRRig.MoveHand.eulerAngles.y;
+            }
             else
+            {
                 yRotation = Camera.main.transform.eulerAngles.y;
+            }
 
             var movementInput = PlayerController.Instance.CurrentVRRig.MovementInput;
+
+            if (movementInput.x != 0f || movementInput.x != 0f)
+            {
+                PlayerController.Instance.FOVBlinders.FadeBlindersIn();
+            }
+            else
+            {
+                PlayerController.Instance.FOVBlinders.FadeBlindersOut();
+            }
 
             return Quaternion.Euler(0f, yRotation, 0f) * new Vector3(movementInput.x, 0f, movementInput.y);
         }

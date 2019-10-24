@@ -6,9 +6,6 @@ namespace VRBattleRoyale.Common.Player
 {
     public class PlayerSettingsController : MonoBehaviour
     {
-        private static double MIN_SMOOTH_ROTATION = 0.5;
-        private static double MAX_SMOOTH_ROTATION = 10;
-
         private static PlayerSettingsController instance;
 
         public static PlayerSettingsController Instance { get { return instance; } }
@@ -24,6 +21,8 @@ namespace VRBattleRoyale.Common.Player
         public SettingsChangedEvent OnInteractionButtonModeChanged;
         public SettingsChangedEvent OnMovementOrientationModeChanged;
         public SettingsChangedEvent OnRoomSetupChanged;
+        public SettingsChangedEvent OnFOVBlindersEnabledChanged;
+        public SettingsChangedEvent OnFOVBlindersStrengthChanged;
 
         public HandednessEnum MoveHand
         {
@@ -56,7 +55,18 @@ namespace VRBattleRoyale.Common.Player
             get { return playerSettings.SnapRotationDegrees; }
             set
             {
-                if(value != 15 && value != 30 && value != 45 && value != 60 && value != 90)
+                var found = false;
+
+                for(var i = 0; i < PlayerSettings.SNAP_DEGREES.Length; i++)
+                {
+                    if(value == PlayerSettings.SNAP_DEGREES[i])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(!found)
                 {
                     return;
                 }
@@ -69,15 +79,12 @@ namespace VRBattleRoyale.Common.Player
                 }
             }
         }
-        public double SmoothRotationSpeed
+        public float SmoothRotationSpeed
         {
             get { return playerSettings.SmoothRotationSpeed; }
             set
             {
-                if (value < MIN_SMOOTH_ROTATION || value > MAX_SMOOTH_ROTATION)
-                {
-                    return;
-                }
+                playerSettings.SmoothRotationSpeed = Mathf.Clamp(value, PlayerSettings.MIN_SMOOTH_ROTATION, PlayerSettings.MAX_SMOOTH_ROTATION);
 
                 if (OnSmoothRotationSpeedChanged != null)
                 {
@@ -124,6 +131,32 @@ namespace VRBattleRoyale.Common.Player
                 }
             }
         }
+        public bool FOVBlindersEnabled
+        {
+            get { return playerSettings.fovBlindersEnabled; }
+            set
+            {
+                playerSettings.fovBlindersEnabled = value;
+
+                if(OnFOVBlindersEnabledChanged != null)
+                {
+                    OnFOVBlindersEnabledChanged();
+                }
+            }
+        }
+        public int FOVBlindersStrength
+        {
+            get { return playerSettings.fovBlindersStrength; }
+            set
+            {
+                playerSettings.fovBlindersStrength = Mathf.Clamp(value, PlayerSettings.MIN_FOV_BLINDERS_STRENGTH, PlayerSettings.MAX_FOV_BLINDERS_STRENGTH);
+
+                if (OnFOVBlindersStrengthChanged != null)
+                {
+                    OnFOVBlindersStrengthChanged();
+                }
+            }
+        }
 
         #region Unity Life Cycle
         private void Awake()
@@ -141,20 +174,21 @@ namespace VRBattleRoyale.Common.Player
             instance = this;
         }
 
-        private void OnDisable()
-        {
-            OnMoveHandChanged = null;
-            OnRotationModeChanged = null;
-            OnSnapRotationDegreesChanged = null;
-            OnSmoothRotationSpeedChanged = null;
-            OnInteractionButtonModeChanged = null;
-        }
-
         private void OnDestroy()
         {
             if (instance == this)
             {
                 instance = null;
+
+                OnMoveHandChanged = null;
+                OnRotationModeChanged = null;
+                OnSnapRotationDegreesChanged = null;
+                OnSmoothRotationSpeedChanged = null;
+                OnInteractionButtonModeChanged = null;
+                OnMovementOrientationModeChanged = null;
+                OnRoomSetupChanged = null;
+                OnFOVBlindersEnabledChanged = null;
+                OnFOVBlindersStrengthChanged = null;
             }
         }
         #endregion

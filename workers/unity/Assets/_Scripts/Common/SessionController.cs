@@ -50,6 +50,23 @@ namespace VRBattleRoyale.Common
                 sessionSettings.HMDType = HMDTypeEnum.PlayStationVR;
             }
 #endif
+
+            if(sessionSettings.HMDType == HMDTypeEnum.OculusQuest)
+            {
+                Time.fixedDeltaTime = 1 / 75f;
+            }
+            else if (sessionSettings.HMDType == HMDTypeEnum.OculusRift)
+            {
+                Time.fixedDeltaTime = 1 / 90f;
+            }
+            else if (sessionSettings.HMDType == HMDTypeEnum.OpenVR)
+            {
+                Time.fixedDeltaTime = 1 / 90f;
+            }
+            else if (sessionSettings.HMDType == HMDTypeEnum.PlayStationVR)
+            {
+                Time.fixedDeltaTime = 1 / 60f;
+            }
         }
 
         private void OnDestroy()
