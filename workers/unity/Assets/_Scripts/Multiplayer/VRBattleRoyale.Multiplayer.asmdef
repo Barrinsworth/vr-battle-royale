@@ -9,7 +9,9 @@
         "Improbable.Gdk.TransformSynchronization",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "VRBattleRoyale.Common",
+        "VRBattleRoyal.Common.Player"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -4,6 +4,8 @@ using UnityEngine;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Vitruvius.Generated.Player;
+using VRBattleRoyale.Common;
+using VRBattleRoyale.Common.Player;
 
 namespace VRBattleRoyale.Multiplayer
 {
@@ -17,9 +19,14 @@ namespace VRBattleRoyale.Multiplayer
         [Require] private PlayerAchorsWriter anchorsWriter;
         [Require] private EntityId entityId;
 
-        [SerializeField] private Transform hmd;
-        [SerializeField] private Transform rightHand;
-        [SerializeField] private Transform leftHand;
+        [Header("--Player Controller Authoritative Client--")]
+        [SerializeField] private VRRig oculusRig;
+        [SerializeField] private VRRig openVRRig;
+        [SerializeField] private VRRig playstationVRRig;
+
+        private VRRig currentVRRig;
+
+        public VRRig CurrentVRRig { get { return currentVRRig; } }
 
         private Coroutine updateAnchorsCoroutine;
 
@@ -33,6 +40,25 @@ namespace VRBattleRoyale.Multiplayer
             }
 
             instance = this;
+
+            switch (SessionController.Instance.CurrentHMDType)
+            {
+                case HMDTypeEnum.OculusQuest:
+                case HMDTypeEnum.OculusRift:
+                    currentVRRig = oculusRig;
+                    break;
+                case HMDTypeEnum.OpenVR:
+                    currentVRRig = openVRRig;
+                    break;
+                case HMDTypeEnum.PlayStationVR:
+                    currentVRRig = playstationVRRig;
+                    break;
+                default:
+                    currentVRRig = openVRRig;
+                    break;
+            }
+
+            CurrentVRRig.gameObject.SetActive(true);
         }
 
         private void OnEnable()
@@ -67,14 +93,14 @@ namespace VRBattleRoyale.Multiplayer
             {
                 var anchorsUpdate = new PlayerAchors.Update();
 
-                anchorsUpdate.HmdPosition = Vector3Util.ConvertToSpatialOSVector3(hmd.localPosition);
-                anchorsUpdate.HmdRotation = QuaternionUtil.ConvertToSpatialOSQuaternion(hmd.localRotation);
+                anchorsUpdate.HmdPosition = Vector3Util.ConvertToSpatialOSVector3(CurrentVRRig.HMDTransform.localPosition);
+                anchorsUpdate.HmdRotation = QuaternionUtil.ConvertToSpatialOSQuaternion(CurrentVRRig.HMDTransform.localRotation);
 
-                anchorsUpdate.RightHandPosition = Vector3Util.ConvertToSpatialOSVector3(rightHand.localPosition);
-                anchorsUpdate.RightHandRotation = QuaternionUtil.ConvertToSpatialOSQuaternion(rightHand.localRotation);
+                anchorsUpdate.RightHandPosition = Vector3Util.ConvertToSpatialOSVector3(CurrentVRRig.RightHandAnchorTransform.localPosition);
+                anchorsUpdate.RightHandRotation = QuaternionUtil.ConvertToSpatialOSQuaternion(CurrentVRRig.RightHandAnchorTransform.localRotation);
 
-                anchorsUpdate.LeftHandPosition = Vector3Util.ConvertToSpatialOSVector3(leftHand.localPosition);
-                anchorsUpdate.LeftHandRotation = QuaternionUtil.ConvertToSpatialOSQuaternion(leftHand.localRotation);
+                anchorsUpdate.LeftHandPosition = Vector3Util.ConvertToSpatialOSVector3(CurrentVRRig.LeftHandAnchorTransform.localPosition);
+                anchorsUpdate.LeftHandRotation = QuaternionUtil.ConvertToSpatialOSQuaternion(CurrentVRRig.LeftHandAnchorTransform.localRotation);
 
                 anchorsWriter.SendUpdate(anchorsUpdate);
 

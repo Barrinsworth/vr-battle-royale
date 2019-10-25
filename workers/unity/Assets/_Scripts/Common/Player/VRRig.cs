@@ -12,6 +12,9 @@ namespace VRBattleRoyale.Common.Player
         [SerializeField] protected Transform rightHandAnchorTransform;
         [SerializeField] protected FOVBlinders fovBlinders;
 
+        public Transform HMDTransform { get { return hmdTransform; } }
+        public Transform LeftHandAnchorTransform { get { return leftHandAnchorTransform; } }
+        public Transform RightHandAnchorTransform { get { return rightHandAnchorTransform; } }
         public Transform MoveHand
         {
             get

@@ -151,8 +151,8 @@ namespace VRBattleRoyale.Common.Player
         {
             blinderRectTransform.sizeDelta = size;
 
-            var sideSize = new Vector2((outterBounds.x - size.x) / 2f, size.y);
-            var sideAnchorPosition = new Vector2(((size.x / 2f) + (sideSize.x / 2f)), 0f);
+            var sideSize = new Vector2((outterBounds.x - size.x) * 0.5f, size.y);
+            var sideAnchorPosition = new Vector2(((size.x * 0.5f) + (sideSize.x * 0.5f)), 0f);
 
             boarderRectTransforms[0].sizeDelta = sideSize;
             boarderRectTransforms[0].anchoredPosition = -sideAnchorPosition;
@@ -160,8 +160,8 @@ namespace VRBattleRoyale.Common.Player
             boarderRectTransforms[1].sizeDelta = sideSize;
             boarderRectTransforms[1].anchoredPosition = sideAnchorPosition;
 
-            var topBottomSize = new Vector2(outterBounds.x, (outterBounds.y - size.y) / 2f);
-            var topBottomAnchorPosition = new Vector2(0f, ((size.y / 2f) + (topBottomSize.y / 2f)));
+            var topBottomSize = new Vector2(outterBounds.x, (outterBounds.y - size.y) * 0.5f);
+            var topBottomAnchorPosition = new Vector2(0f, ((size.y * 0.5f) + (topBottomSize.y * 0.5f)));
 
             boarderRectTransforms[2].sizeDelta = topBottomSize;
             boarderRectTransforms[2].anchoredPosition = topBottomAnchorPosition;
