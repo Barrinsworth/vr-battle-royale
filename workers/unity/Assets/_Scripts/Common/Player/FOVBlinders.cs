@@ -6,7 +6,6 @@ namespace VRBattleRoyale.Common.Player
 {
     public class FOVBlinders : MonoBehaviour
     {
-        private const float MAX_OFFSET = 600;
         private const float FADE_IN_TIME = 0.2f;
         private const float FADE_OUT_TIME = 0.1f;
 
@@ -19,20 +18,36 @@ namespace VRBattleRoyale.Common.Player
         }
 
         [Header("--FOV Blinders--")]
-        [SerializeField] private RectTransform scaleRectTransform;
+        [SerializeField] private Vector2 outterBounds = Vector2.zero;
+        [SerializeField] private Vector2 innerBoundsMax = Vector2.zero;
+        [SerializeField] private Vector2 innerBoundsMin = Vector2.zero;
+        [SerializeField] private RectTransform blinderRectTransform;
+        [SerializeField] private RectTransform[] boarderRectTransforms = new RectTransform[0];
 
         private State currentState = State.Off;
+        private float percentOn = 0f;
+        private Vector2 stepBounds = Vector2.zero;
         private Coroutine fadeCoroutine;
 
         #region Unity Lifecycle
+        private void Awake()
+        {
+            stepBounds = (innerBoundsMax - innerBoundsMin) / PlayerSettings.MAX_FOV_BLINDERS_STRENGTH;
+        }
+
         private void OnEnable()
         {
             fadeCoroutine = null;
 
             PlayerSettingsController.Instance.OnFOVBlindersEnabledChanged += FOVBlindersEnableChanged;
-
-            FOVBlindersEnableChanged();
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            ChangeSize(innerBoundsMax);
+        }
+#endif
 
         private void OnDisable()
         {
@@ -52,8 +67,9 @@ namespace VRBattleRoyale.Common.Player
                     StopCoroutine(fadeCoroutine);
                 fadeCoroutine = null;
 
-                ChangeSize(MAX_OFFSET);
+                ChangeSize(innerBoundsMax);
 
+                percentOn = 0f;
                 currentState = State.Off;
             }
         }
@@ -73,20 +89,23 @@ namespace VRBattleRoyale.Common.Player
         {
             currentState = State.FadingOn;
 
-            var timer = 0f;
-            var startOffset = scaleRectTransform.offsetMax.x;
+            var timer = FADE_IN_TIME * percentOn;
+            var targetSize = innerBoundsMax - (stepBounds * PlayerSettingsController.Instance.FOVBlindersStrength);
 
             while (timer < FADE_IN_TIME)
             {
                 timer += Time.deltaTime;
 
-                ChangeSize(Mathf.Lerp(startOffset, 300 - (PlayerSettingsController.Instance.FOVBlindersStrength * 10), timer / FADE_IN_TIME));
+                percentOn = timer / FADE_IN_TIME;
+
+                ChangeSize(Vector2.Lerp(innerBoundsMax, targetSize, percentOn));
 
                 yield return null;
             }
 
-            ChangeSize(300 - (PlayerSettingsController.Instance.FOVBlindersStrength * 10));
+            ChangeSize(targetSize);
 
+            percentOn = 1f;
             currentState = State.On;
 
             fadeCoroutine = null;
@@ -106,29 +125,49 @@ namespace VRBattleRoyale.Common.Player
         {
             currentState = State.FadingOff;
 
-            var timer = 0f;
-            var startOffset = scaleRectTransform.offsetMax.x;
+            var timer = (1f - percentOn) * FADE_OUT_TIME;
+            var targetSize = innerBoundsMax - (stepBounds * PlayerSettingsController.Instance.FOVBlindersStrength);
 
             while (timer < FADE_OUT_TIME)
             {
                 timer += Time.deltaTime;
 
-                ChangeSize(Mathf.Lerp(startOffset, MAX_OFFSET, timer / FADE_OUT_TIME));
+                percentOn = 1f - (timer / FADE_OUT_TIME);
+
+                ChangeSize(Vector2.Lerp(innerBoundsMax, targetSize, percentOn));
 
                 yield return null;
             }
 
-            ChangeSize(MAX_OFFSET);
+            ChangeSize(innerBoundsMax);
 
+            percentOn = 0f;
             currentState = State.Off;
 
             fadeCoroutine = null;
         }
 
-        private void ChangeSize(float offset)
+        private void ChangeSize(Vector2 size)
         {
-            scaleRectTransform.offsetMin = new Vector2(-offset, -offset);
-            scaleRectTransform.offsetMax = new Vector2(offset, offset);
+            blinderRectTransform.sizeDelta = size;
+
+            var sideSize = new Vector2((outterBounds.x - size.x) / 2f, size.y);
+            var sideAnchorPosition = new Vector2(((size.x / 2f) + (sideSize.x / 2f)), 0f);
+
+            boarderRectTransforms[0].sizeDelta = sideSize;
+            boarderRectTransforms[0].anchoredPosition = -sideAnchorPosition;
+
+            boarderRectTransforms[1].sizeDelta = sideSize;
+            boarderRectTransforms[1].anchoredPosition = sideAnchorPosition;
+
+            var topBottomSize = new Vector2(outterBounds.x, (outterBounds.y - size.y) / 2f);
+            var topBottomAnchorPosition = new Vector2(0f, ((size.y / 2f) + (topBottomSize.y / 2f)));
+
+            boarderRectTransforms[2].sizeDelta = topBottomSize;
+            boarderRectTransforms[2].anchoredPosition = topBottomAnchorPosition;
+
+            boarderRectTransforms[3].sizeDelta = topBottomSize;
+            boarderRectTransforms[3].anchoredPosition = -topBottomAnchorPosition;
         }
     }
 }

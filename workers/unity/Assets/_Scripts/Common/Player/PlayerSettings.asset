@@ -20,4 +20,4 @@ MonoBehaviour:
   MovementOrientationMode: 1
   RoomSetup: 0
   fovBlindersEnabled: 1
-  fovBlindersStrength: 1
+  fovBlindersStrength: 5

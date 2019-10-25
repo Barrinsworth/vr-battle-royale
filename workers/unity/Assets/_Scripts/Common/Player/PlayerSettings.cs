@@ -11,7 +11,7 @@ namespace VRBattleRoyale.Common.Player
         public static float MAX_SMOOTH_ROTATION = 10f;
         public static int[] SNAP_DEGREES = { 15, 30, 45, 60, 90 };
         public static int MIN_FOV_BLINDERS_STRENGTH = 1;
-        public static int MAX_FOV_BLINDERS_STRENGTH = 20;
+        public static int MAX_FOV_BLINDERS_STRENGTH = 10;
 
         public HandednessEnum MoveHand = HandednessEnum.Left;
         public RotationModeEnum RotationMode = RotationModeEnum.Snap;
@@ -21,6 +21,6 @@ namespace VRBattleRoyale.Common.Player
         public MovementOrientationModeEnum MovementOrientationMode = MovementOrientationModeEnum.Hand;
         public RoomSetupEnum RoomSetup = RoomSetupEnum.Roomscale;
         public bool fovBlindersEnabled = true;
-        public int fovBlindersStrength = 10;
+        public int fovBlindersStrength = 5;
     }
 }
