@@ -1,8 +1,8 @@
 {
     "name": "VRBattleRoyal.Common.Player",
     "references": [
-        "GUID:f64c9ebcd7899c3448a08dc9f9ddbe30",
-        "GUID:f0a9197da83c27947b1b24f93b927d5b"
+        "GUID:f0a9197da83c27947b1b24f93b927d5b",
+        "GUID:f64c9ebcd7899c3448a08dc9f9ddbe30"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

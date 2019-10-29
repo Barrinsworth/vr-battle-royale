@@ -4,19 +4,19 @@ using UnityEngine;
 using VRBattleRoyale.Common;
 using VRBattleRoyale.Common.Player;
 
-namespace VRBattleRoyale.SinglePlayer
+namespace VRBattleRoyale.Singleplayer
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController_Singleplayer : MonoBehaviour
     {
-        private static PlayerController instance;
+        private static PlayerController_Singleplayer instance;
 
-        public static PlayerController Instance { get { return instance; } }
+        public static PlayerController_Singleplayer Instance { get { return instance; } }
 
-        [Header("--Player Controller--")]
+        [Header("--Player Controller Single Player--")]
         [SerializeField] private VRRig oculusRig;
         [SerializeField] private VRRig openVRRig;
         [SerializeField] private VRRig playstationVRRig;
-        [SerializeField] private PlayerMotor playerMotor;
+        [SerializeField] private PlayerMotor_Singleplayer playerMotor;
 
         private VRRig currentVRRig;
 
@@ -30,11 +30,7 @@ namespace VRBattleRoyale.SinglePlayer
         {
             if(instance != null)
             {
-#if UNITY_EDITOR
-                DestroyImmediate(gameObject);
-#else
                 Destroy(gameObject);
-#endif
                 return;
             }
 

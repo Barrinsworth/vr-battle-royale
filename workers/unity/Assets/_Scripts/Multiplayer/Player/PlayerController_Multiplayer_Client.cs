@@ -10,25 +10,29 @@ using VRBattleRoyale.Common.Player;
 namespace VRBattleRoyale.Multiplayer
 {
     [WorkerType(WorkerUtils.UnityClient, WorkerUtils.MobileClient)]
-    public class PlayerController_AuthoritativeClient : MonoBehaviour
+    public class PlayerController_Multiplayer_Client : MonoBehaviour
     {
-        private static PlayerController_AuthoritativeClient instance;
+        private static PlayerController_Multiplayer_Client instance;
 
-        public static PlayerController_AuthoritativeClient Instance { get { return instance; } }
+        public static PlayerController_Multiplayer_Client Instance { get { return instance; } }
 
         [Require] private PlayerAchorsWriter anchorsWriter;
         [Require] private EntityId entityId;
 
-        [Header("--Player Controller Authoritative Client--")]
+        [Header("--Player Controller Multiplayer Client--")]
         [SerializeField] private VRRig oculusRig;
         [SerializeField] private VRRig openVRRig;
         [SerializeField] private VRRig playstationVRRig;
+        [SerializeField] private PlayerMotor_Multiplayer_Client playerMotor;
+        [SerializeField] private float updateFrequency = 0.03333f;
 
+        private float timeSinceLastUpdate = 0f;
         private VRRig currentVRRig;
 
         public VRRig CurrentVRRig { get { return currentVRRig; } }
-
-        private Coroutine updateAnchorsCoroutine;
+        public Vector3 Position { get { return CurrentVRRig.transform.position; } set { CurrentVRRig.transform.position = value; } }
+        public Quaternion Rotation { get { return CurrentVRRig.transform.rotation; } set { CurrentVRRig.transform.rotation = value; } }
+        public float YEulerAngle { get { return CurrentVRRig.transform.eulerAngles.y; } }
 
         #region Unity Life Cycle
         private void Awake()
@@ -61,35 +65,11 @@ namespace VRBattleRoyale.Multiplayer
             CurrentVRRig.gameObject.SetActive(true);
         }
 
-        private void OnEnable()
+        private void Update()
         {
-            if(anchorsWriter != null)
-            {
-                updateAnchorsCoroutine = StartCoroutine(UpdareAnchorsCoroutine());
-            }
-        }
+            timeSinceLastUpdate += Time.deltaTime;
 
-        private void OnDisable()
-        {
-            if(updateAnchorsCoroutine != null)
-            {
-                StopCoroutine(updateAnchorsCoroutine);
-                updateAnchorsCoroutine = null;
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if(instance == this)
-            {
-                instance = null;
-            }
-        }
-        #endregion
-
-        private IEnumerator UpdareAnchorsCoroutine()
-        {
-            while(true)
+            if(timeSinceLastUpdate >= updateFrequency)
             {
                 var anchorsUpdate = new PlayerAchors.Update();
 
@@ -104,10 +84,17 @@ namespace VRBattleRoyale.Multiplayer
 
                 anchorsWriter.SendUpdate(anchorsUpdate);
 
-                yield return new WaitForSecondsRealtime(0.03333f);
+                timeSinceLastUpdate = 0f;
             }
-
-            updateAnchorsCoroutine = null;
         }
+
+        private void OnDestroy()
+        {
+            if(instance == this)
+            {
+                instance = null;
+            }
+        }
+        #endregion
     }
 }

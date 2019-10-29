@@ -53,7 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4013454336299398464}
-  - component: {fileID: 8559113697526684869}
+  - component: {fileID: 180384099329287224}
   - component: {fileID: 3903341287948113442}
   - component: {fileID: 689085470073873981}
   - component: {fileID: 3963901739722055062}
@@ -79,7 +79,7 @@ Transform:
   m_Father: {fileID: 2151672172817407752}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8559113697526684869
+--- !u!114 &180384099329287224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,28 +88,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4015979116613957120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092905fd9cb82e343924732d5e2a1890, type: 3}
+  m_Script: {fileID: 11500000, guid: 54728260b5bee8245bdfcd41019a4205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
   mover: {fileID: 3903341287948113442}
   moverRigidbody: {fileID: 3963901739722055062}
   headCollider: {fileID: 4656504968610645078}
-  movementSpeed: 7
-  jumpSpeed: 7
-  jumpDuration: 0.2
-  extraJumpTimeAfterLeavingGround: 0.15
-  stepHeightWorldUnits: 0.4
-  slopeLimit: 70
-  airControl: 0.4
-  gravity: 30
-  slideGravity: 30
-  airFriction: 0.5
-  groundFriction: 100
-  smoothRotationMultiplier: 30
-  snapRotationCooldown: 0.3
-  crouchDistance: 0.5
-  cameraForwardOffset: 0.05
-  cameraSmoothTime: 0.05
 --- !u!114 &3903341287948113442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,10 +159,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2151672172817407752}
-  - component: {fileID: 5727653523802100825}
-  - component: {fileID: 6017627354748937152}
+  - component: {fileID: 5141733303830076128}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player_Singleplayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,7 +183,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5727653523802100825
+--- !u!114 &5141733303830076128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,26 +192,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8165753977389637153}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12c7d6e67b4043340b6303b59001a555, type: 3}
+  m_Script: {fileID: 11500000, guid: cd89261826458c64d87ad3027c93aecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   oculusRig: {fileID: 3936693190425655985}
   openVRRig: {fileID: 0}
   playstationVRRig: {fileID: 0}
-  playerMotor: {fileID: 8559113697526684869}
---- !u!114 &6017627354748937152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8165753977389637153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6bea527dbc9c1a4f8b0e56aaa9f13b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerSettings: {fileID: 11400000, guid: da666a8a7c6189d4faecad2cfa0421e9, type: 2}
+  playerMotor: {fileID: 180384099329287224}
 --- !u!1001 &5022530446433668084
 PrefabInstance:
   m_ObjectHideFlags: 0

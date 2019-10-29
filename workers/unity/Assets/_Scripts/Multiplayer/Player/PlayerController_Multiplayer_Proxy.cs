@@ -7,12 +7,13 @@ using Vitruvius.Generated.Player;
 
 namespace VRBattleRoyale.Multiplayer
 {
-    [WorkerType(WorkerUtils.UnityClient, WorkerUtils.MobileClient)]
-    public class PlayerController_NonAuthoritativeClient : MonoBehaviour
+    [WorkerType(WorkerUtils.UnityClient, WorkerUtils.MobileClient, WorkerUtils.UnityGameLogic)]
+    public class PlayerController_Multiplayer_Proxy : MonoBehaviour
     {
         [Require] private PlayerAchorsReader anchorsReader;
         [Require] private EntityId entityId;
 
+        [Header("--Player Controller Multiplayer Proxy--")]
         [SerializeField] private Transform hmd;
         [SerializeField] private Transform rightHand;
         [SerializeField] private Transform leftHand;

@@ -1,4 +1,4 @@
-﻿namespace VRBattleRoyale.SinglePlayer
+﻿namespace VRBattleRoyale.Common.Player
 {
     public enum PlayerMotorStateEnum
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VRBattleRoyale
+namespace VRBattleRoyale.Multiplayer
 {
     public static class Vector3Util
     {

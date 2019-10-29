@@ -15,6 +15,7 @@ namespace VRBattleRoyale.Multiplayer
             template.AddComponent(new Position.Snapshot(), clientAttribute);
             template.AddComponent(new Metadata.Snapshot("Player"), serverAttribute);
             template.AddComponent(new Vitruvius.Generated.Player.PlayerAchors.Snapshot(), clientAttribute);
+            template.AddComponent(new Vitruvius.Generated.Player.ClientPlayerMovementUpdate.Snapshot(), clientAttribute);
             PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, workerId, serverAttribute);
 
             template.SetReadAccess(UnityClientConnector.WorkerType, MobileClientWorkerConnector.WorkerType, serverAttribute);

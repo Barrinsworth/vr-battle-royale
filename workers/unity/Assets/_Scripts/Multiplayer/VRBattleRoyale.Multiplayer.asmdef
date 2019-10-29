@@ -11,7 +11,8 @@
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
         "VRBattleRoyale.Common",
-        "VRBattleRoyal.Common.Player"
+        "VRBattleRoyal.Common.Player",
+        "CharacterMovementFundamentals"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

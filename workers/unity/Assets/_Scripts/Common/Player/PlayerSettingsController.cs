@@ -172,6 +172,8 @@ namespace VRBattleRoyale.Common.Player
             }
 
             instance = this;
+
+            DontDestroyOnLoad(gameObject);
         }
 
         private void OnDestroy()
