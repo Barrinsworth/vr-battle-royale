@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Subscriptions;
 using VRBattleRoyale.Common;
 using VRBattleRoyale.Common.Player;
 using Vitruvius.Generated.Player;
-using Improbable.Gdk.Core;
-using Improbable.Gdk.Subscriptions;
 
 namespace VRBattleRoyale.Multiplayer
 {
@@ -16,40 +16,35 @@ namespace VRBattleRoyale.Multiplayer
 
         [Header("--Player Motor Multiplayer Client--")]
         [SerializeField] private PlayerMotorVariables motorVariables;
-        [SerializeField] private float updateFrequency = 0.03333f;
+        [SerializeField] private float movementUpdateFrequency = 0.03333f;
 
-        private Vector3 previousPlayerLocalPosition = Vector3.zero;
-        private float timeSinceLastUpdate = 0f;
+        private Vector3 origin = Vector3.zero;
+        private float timeSinceLastMovementUpdate = 0f;
 
         private Vector3 clientMovementUpdateMovementInput = Vector3.zero;
         private bool clientMovementUpdateJump = false;
         private bool clientMovementUpdateCrouch = false;
 
         #region Unity Life Cycle
-        private void Awake()
-        {
-            previousPlayerLocalPosition = Camera.main.transform.localPosition;
-        }
-
         private void OnEnable()
         {
-            
+            origin = GetComponent<LinkedEntityComponent>().Worker.Origin;
         }
 
         private void Update()
         {
-            timeSinceLastUpdate += Time.deltaTime;
+            timeSinceLastMovementUpdate += Time.deltaTime;
 
             GetInput();
 
-            if (timeSinceLastUpdate >= updateFrequency)
+            if (timeSinceLastMovementUpdate >= movementUpdateFrequency)
             {
                 SendClientMovementUpdate();
 
-                timeSinceLastUpdate = 0f;
-            }
+                ResetInput();
 
-            previousPlayerLocalPosition = Camera.main.transform.localPosition;
+                timeSinceLastMovementUpdate = 0f;
+            }
         }
 
         private void OnDisable()
@@ -99,13 +94,12 @@ namespace VRBattleRoyale.Multiplayer
             update.Jump = clientMovementUpdateJump;
 
             clientMovementWriter.SendUpdate(update);
-
-            ResetClientMovementUpdate();
         }
 
-        private void ResetClientMovementUpdate()
+        private void ResetInput()
         {
             clientMovementUpdateJump = false;
+            clientMovementUpdateCrouch = false;
             clientMovementUpdateMovementInput = Vector3.zero;
         }
     }

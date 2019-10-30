@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
+using UnityEngine;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Mobile;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.GameObjectCreation;
-using UnityEngine;
 
 namespace VRBattleRoyale.Multiplayer
 {

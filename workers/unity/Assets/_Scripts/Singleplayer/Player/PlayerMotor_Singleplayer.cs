@@ -53,7 +53,8 @@ namespace VRBattleRoyale.Singleplayer
 
         private void Update()
         {
-            TeleportPlayerHead(Vector3.SmoothDamp(Camera.main.transform.position, DesiredHeadPosition, ref smoothVelocity, motorVariables.CameraSmoothTime));
+            TeleportPlayerHead(Vector3.SmoothDamp(Camera.main.transform.position, DesiredHeadPosition, ref smoothVelocity, motorVariables.CameraSmoothTime),
+                moverRigidbody.transform.eulerAngles.y);
 
             GetInput();
 
@@ -190,8 +191,6 @@ namespace VRBattleRoyale.Singleplayer
                 {
                     yEulerAngle = PlayerController_Singleplayer.Instance.YEulerAngle + deltaRotation;
                 }
-
-                TeleportPlayerHead(Camera.main.transform.position, yEulerAngle);
 
                 moverRigidbody.MoveRotation(Quaternion.Euler(0f, yEulerAngle, 0f));
             }

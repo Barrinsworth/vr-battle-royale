@@ -12,7 +12,7 @@ namespace VRBattleRoyale.Multiplayer
             var serverAttribute = UnityGameLogicConnector.WorkerType;
 
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), clientAttribute);
+            template.AddComponent(new Position.Snapshot(), serverAttribute);
             template.AddComponent(new Metadata.Snapshot("Player"), serverAttribute);
             template.AddComponent(new Vitruvius.Generated.Player.PlayerAchors.Snapshot(), clientAttribute);
             template.AddComponent(new Vitruvius.Generated.Player.ClientPlayerMovementUpdate.Snapshot(), clientAttribute);

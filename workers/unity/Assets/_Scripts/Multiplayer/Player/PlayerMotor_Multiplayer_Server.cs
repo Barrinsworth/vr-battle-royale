@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRBattleRoyale.Common;
+using Improbable;
+using Improbable.Gdk.Subscriptions;
 using VRBattleRoyale.Common.Player;
 using Vitruvius.Generated.Player;
-using Improbable.Gdk.Core;
-using Improbable.Gdk.Subscriptions;
 
 namespace VRBattleRoyale.Multiplayer
 {
@@ -13,21 +12,25 @@ namespace VRBattleRoyale.Multiplayer
     public class PlayerMotor_Multiplayer_Server : PlayerMotor_Multiplayer
     {
         [Require] private ClientPlayerMovementUpdateReader clientMovementReader;
+        [Require] private PositionWriter spatialPosition;
 
-        [Header("--Player Motor Multi Player--")]
+        [Header("--Player Motor Multiplayer Server--")]
         [SerializeField] private PlayerController_Multiplayer_Proxy playerControllerProxy;
         [SerializeField] private PlayerMotorVariables motorVariables;
         [SerializeField] private Mover mover;
         [SerializeField] private Rigidbody moverRigidbody;
         [SerializeField] private SphereCollider headCollider;
+        [SerializeField] private float spatialOSUpdateFrequency = 1f;
 
         private PlayerMotorStateEnum currentMotorState = PlayerMotorStateEnum.Falling;
         private Vector3 momentum = Vector3.zero;
         private Vector3 savedVelocity = Vector3.zero;
         private Vector3 savedMovementVelocity = Vector3.zero;
         private Vector3 savedPlayerLocalPosition = Vector3.zero;
+        private Vector3 origin = Vector3.zero;
         private float jumpStartTime = 0f;
         private float lastGroundedTime = 0f;
+        private float timeSinceLastSpatialOSUpdate = 0f;
         private bool crouching = false;
 
         private Vector2 movementInput = Vector2.zero;
@@ -58,7 +61,24 @@ namespace VRBattleRoyale.Multiplayer
 
         private void OnEnable()
         {
+            origin = GetComponent<LinkedEntityComponent>().Worker.Origin;
+
             clientMovementReader.OnUpdate += PlayerMovementUpdate_Client;
+        }
+
+        private void Update()
+        {
+            TeleportPlayerHead(DesiredHeadPosition);
+
+            timeSinceLastSpatialOSUpdate += Time.deltaTime;
+
+            if(timeSinceLastSpatialOSUpdate >= spatialOSUpdateFrequency)
+            {
+                var positionUpdate = new Position.Update { Coords = Coordinates.FromUnityVector(mover.transform.position - origin) };
+                spatialPosition.SendUpdate(positionUpdate);
+
+                timeSinceLastSpatialOSUpdate = 0f;
+            }
         }
 
         private void FixedUpdate()
@@ -386,5 +406,34 @@ namespace VRBattleRoyale.Multiplayer
                 OnJump(momentum);
             }
         }
+
+        #region Teleports
+        private void TeleportPlayerRoom(Vector3 desiredWorldPositionOfRoom, Quaternion desiredWordRotationOfRoom)
+        {
+            playerControllerProxy.Rig.rotation = desiredWordRotationOfRoom;
+            playerControllerProxy.Rig.position = desiredWorldPositionOfRoom;
+        }
+
+        private void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera)
+        {
+            TeleportPlayerRoom(desiredWorldPositionOfCamera + (playerControllerProxy.Rig.position - playerControllerProxy.HMD.position), playerControllerProxy.Rig.rotation);
+        }
+
+        private void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera, float lookAtYEulerAngle)
+        {
+            //if (PlayerSettingsController.Instance.RoomSetup == RoomSetupEnum.Roomscale)
+            //{
+            //    TeleportPlayerRoom(desiredWorldPositionOfCamera + (Quaternion.Euler(0f, lookAtYEulerAngle - Camera.main.transform.eulerAngles.y, 0f) *
+            //        (PlayerController_Singleplayer.Instance.Position - Camera.main.transform.position)),
+            //        Quaternion.Euler(0f, lookAtYEulerAngle - Camera.main.transform.localEulerAngles.y, 0f));
+            //}
+            //else
+            //{
+            //    TeleportPlayerRoom(desiredWorldPositionOfCamera + (Quaternion.Euler(0f, lookAtYEulerAngle - PlayerController_Singleplayer.Instance.YEulerAngle, 0f) *
+            //        (PlayerController_Singleplayer.Instance.Position - Camera.main.transform.position)),
+            //        Quaternion.Euler(0f, lookAtYEulerAngle, 0f));
+            //}
+        }
+        #endregion
     }
 }

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectCreation;
-//using Improbable.Gdk.Movement;
 using Improbable.Gdk.PlayerLifecycle;
-//using Improbable.Gdk.StandardTypes;
 using Improbable.Gdk.Subscriptions;
-using UnityEngine;
-using Object = UnityEngine.Object;
+
 
 namespace VRBattleRoyale.Multiplayer
 {
@@ -75,7 +73,7 @@ namespace VRBattleRoyale.Multiplayer
             var position = workerOrigin + new Vector3(UnityEngine.Random.Range(0f, 1f), 0f, UnityEngine.Random.Range(0f, 1f));
 
             var prefab = owningWorker.WorkerId == workerId ? cachedAuthPlayer : cachedNonAuthPlayer;
-            var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
+            var gameObject = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
 
             gameObjectsCreated.Add(entity.SpatialOSEntityId, gameObject);
             gameObject.name = $"{prefab.name}(SpatialOS {entity.SpatialOSEntityId}, Worker: {workerType})";
@@ -98,7 +96,7 @@ namespace VRBattleRoyale.Multiplayer
             //}
 
             gameObjectsCreated.Remove(entityId);
-            Object.Destroy(go);
+            UnityEngine.Object.Destroy(go);
         }
     }
 }

@@ -24,9 +24,9 @@ namespace VRBattleRoyale.Multiplayer
         [SerializeField] private VRRig openVRRig;
         [SerializeField] private VRRig playstationVRRig;
         [SerializeField] private PlayerMotor_Multiplayer_Client playerMotor;
-        [SerializeField] private float updateFrequency = 0.03333f;
+        [SerializeField] private float anchorsUpdateFrequency = 0.03333f;
 
-        private float timeSinceLastUpdate = 0f;
+        private float timeSinceLastAnchorUpdate = 0f;
         private VRRig currentVRRig;
 
         public VRRig CurrentVRRig { get { return currentVRRig; } }
@@ -67,9 +67,9 @@ namespace VRBattleRoyale.Multiplayer
 
         private void Update()
         {
-            timeSinceLastUpdate += Time.deltaTime;
+            timeSinceLastAnchorUpdate += Time.deltaTime;
 
-            if(timeSinceLastUpdate >= updateFrequency)
+            if(timeSinceLastAnchorUpdate >= anchorsUpdateFrequency)
             {
                 var anchorsUpdate = new PlayerAchors.Update();
 
@@ -84,7 +84,7 @@ namespace VRBattleRoyale.Multiplayer
 
                 anchorsWriter.SendUpdate(anchorsUpdate);
 
-                timeSinceLastUpdate = 0f;
+                timeSinceLastAnchorUpdate = 0f;
             }
         }
 

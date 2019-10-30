@@ -14,10 +14,12 @@ namespace VRBattleRoyale.Multiplayer
         [Require] private EntityId entityId;
 
         [Header("--Player Controller Multiplayer Proxy--")]
+        [SerializeField] private Transform rig;
         [SerializeField] private Transform hmd;
         [SerializeField] private Transform rightHand;
         [SerializeField] private Transform leftHand;
 
+        public Transform Rig { get { return rig; } }
         public Transform HMD { get { return hmd; } }
 
         #region Unity Life Cycle
