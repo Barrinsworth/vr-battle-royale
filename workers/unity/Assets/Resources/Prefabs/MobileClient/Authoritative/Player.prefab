@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2943217858778150784}
-  - component: {fileID: 2449533517039444708}
   - component: {fileID: 58403493780748421}
   - component: {fileID: 882838319853386287}
   - component: {fileID: 4300856004269922079}
@@ -35,22 +34,6 @@ Transform:
   m_Father: {fileID: 7657691175727160282}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2449533517039444708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2192882670354838647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a04e546b1eead409a0cdeb16c996a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
-  mover: {fileID: 58403493780748421}
-  moverRigidbody: {fileID: 4300856004269922079}
-  headCollider: {fileID: 4684517968038422397}
 --- !u!114 &58403493780748421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +99,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7657691175727160282}
   - component: {fileID: 5489565396818808644}
+  - component: {fileID: 6886705534345578357}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -146,7 +130,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2861457616712419454}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a070fbbca6b5a1b4d9c989522148b238, type: 3}
   m_Name: 
@@ -154,7 +138,22 @@ MonoBehaviour:
   oculusRig: {fileID: 3718170601526092677}
   openVRRig: {fileID: 0}
   playstationVRRig: {fileID: 0}
-  playerMotor: {fileID: 2449533517039444708}
+  playerMotor: {fileID: 6886705534345578357}
+  updateFrequency: 0.03333
+--- !u!114 &6886705534345578357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861457616712419454}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a04e546b1eead409a0cdeb16c996a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
+  updateFrequency: 0.03333
 --- !u!1 &3716751735055084957
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ namespace VRBattleRoyale.Multiplayer
         [Require] private ClientPlayerMovementUpdateReader clientMovementReader;
 
         [Header("--Player Motor Multi Player--")]
+        [SerializeField] private PlayerController_Multiplayer_Proxy playerControllerProxy;
         [SerializeField] private PlayerMotorVariables motorVariables;
         [SerializeField] private Mover mover;
         [SerializeField] private Rigidbody moverRigidbody;
@@ -25,23 +26,36 @@ namespace VRBattleRoyale.Multiplayer
         private Vector3 savedVelocity = Vector3.zero;
         private Vector3 savedMovementVelocity = Vector3.zero;
         private Vector3 savedPlayerLocalPosition = Vector3.zero;
-        private Vector3 smoothVelocity = Vector3.zero;
         private float jumpStartTime = 0f;
-        private float snapRotationTime = 0f;
         private float lastGroundedTime = 0f;
         private bool crouching = false;
 
-        private bool jumpPressed = false;
-        private bool crouchPressed = false;
+        private Vector2 movementInput = Vector2.zero;
+        private bool jump = false;
 
         public bool IsGrounded { get { return (currentMotorState == PlayerMotorStateEnum.Grounded || currentMotorState == PlayerMotorStateEnum.Sliding); } }
-        private float PlayerHeight { get { return Camera.main.transform.localPosition.y - (crouching == true ? motorVariables.CrouchDistance : 0f); } }
+        private float PlayerHeight { get { return playerControllerProxy.HMD.localPosition.y - (crouching == true ? motorVariables.CrouchDistance : 0f); } }
+        private Vector3 DesiredHeadPosition
+        {
+            get
+            {
+                var cameraForwardXZ = playerControllerProxy.HMD.forward;
+                cameraForwardXZ.y = 0f;
+
+                return mover.transform.position + (Vector3.up * (mover.colliderHeight - headCollider.radius)) + (cameraForwardXZ.normalized * motorVariables.CameraForwardOffset);
+            }
+        }
 
         public delegate void PlayerMotorVector3Event(Vector3 v);
         public event PlayerMotorVector3Event OnJump;
         public event PlayerMotorVector3Event OnLand;
 
         #region Unity Life Cycle
+        private void Awake()
+        {
+            savedPlayerLocalPosition = playerControllerProxy.HMD.localPosition;
+        }
+
         private void OnEnable()
         {
             clientMovementReader.OnUpdate += PlayerMovementUpdate_Client;
@@ -49,51 +63,39 @@ namespace VRBattleRoyale.Multiplayer
 
         private void FixedUpdate()
         {
-            var deltaPlayerLocalPosition = Camera.main.transform.localPosition - savedPlayerLocalPosition;
+            var deltaPlayerLocalPosition = playerControllerProxy.HMD.localPosition - savedPlayerLocalPosition;
             deltaPlayerLocalPosition.y = 0f;
 
-            //moverRigidbody.MovePosition(moverRigidbody.transform.position + (Quaternion.Euler(0f, PlayerController_Multiplayer_Client.Instance.YEulerAngle, 0f) *
-            //    new Vector3(deltaPlayerLocalPosition.x, 0f, deltaPlayerLocalPosition.z)));
+            moverRigidbody.MovePosition(moverRigidbody.transform.position + (Quaternion.Euler(0f, mover.transform.eulerAngles.y, 0f) *
+                new Vector3(deltaPlayerLocalPosition.x, 0f, deltaPlayerLocalPosition.z)));
 
-            //moverRigidbody.MoveRotation(PlayerController_Singleplayer.Instance.Rotation);
+            headCollider.transform.position = DesiredHeadPosition;
 
-            //headCollider.transform.position = DesiredHeadPosition;
+            ResizeMover();
 
-            //ResizeMover();
+            mover.CheckForGround();
 
-            //mover.CheckForGround();
+            HandleState();
 
-            //HandleState();
+            HandleMomentum();
 
-            //HandleMomentum();
+            HandleJumping();
 
-            //HandleJumping();
+            var velocity = CalculateMovementVelocity();
 
-            //HandleCrouching();
+            velocity += momentum;
 
-            //var velocity = CalculateMovementVelocity();
+            mover.SetExtendSensorRange(IsGrounded);
 
-            //velocity += momentum;
+            mover.SetVelocity(velocity);
 
-            //mover.SetExtendSensorRange(IsGrounded);
+            savedVelocity = velocity;
+            savedMovementVelocity = velocity - momentum;
 
-            //mover.SetVelocity(velocity);
+            movementInput = Vector2.zero;
+            jump = false;
 
-            //if (velocity.x != 0f || velocity.y != 0f || velocity.z != 0)
-            //{
-            //    PlayerController_Multiplayer_Client.Instance.CurrentVRRig.FOVBlinders.FadeBlindersIn();
-            //}
-            //else
-            //{
-            //    PlayerController_Multiplayer_Client.Instance.CurrentVRRig.FOVBlinders.FadeBlindersOut();
-            //}
-
-            //savedVelocity = velocity;
-            //savedMovementVelocity = velocity - momentum;
-
-            ResetInput();
-
-            savedPlayerLocalPosition = Camera.main.transform.localPosition;
+            savedPlayerLocalPosition = playerControllerProxy.HMD.localPosition;
         }
 
         private void OnDisable()
@@ -111,7 +113,13 @@ namespace VRBattleRoyale.Multiplayer
         #region SpatialOS Event Listeners
         private void PlayerMovementUpdate_Client(ClientPlayerMovementUpdate.Update update)
         {
-            // Record the input, handle rotation and scaling the mover
+            movementInput = Vector2Util.ConvertToUnityVector2(update.MovementInput);
+            jump = update.Jump;
+
+            if(update.Crouch)
+            {
+                crouching = !crouching;
+            }
         }
         #endregion
 
@@ -138,58 +146,6 @@ namespace VRBattleRoyale.Multiplayer
             }
 
             mover.RecalculateColliderDimensions();
-        }
-
-        private void GetInput()
-        {
-            if (!jumpPressed)
-            {
-                jumpPressed = PlayerController_Multiplayer_Client.Instance.CurrentVRRig.JumpButtonPressed;
-            }
-
-            if (!crouchPressed)
-            {
-                crouchPressed = PlayerController_Multiplayer_Client.Instance.CurrentVRRig.CrouchButtonPressed;
-            }
-        }
-
-        private void ResetInput()
-        {
-            jumpPressed = false;
-            crouchPressed = false;
-        }
-
-        private void HandleRotation()
-        {
-            var rotationInput = PlayerController_Multiplayer_Client.Instance.CurrentVRRig.RotationInput;
-
-            var deltaRotation = 0f;
-
-            if (PlayerSettingsController.Instance.RotationMode == RotationModeEnum.Smooth)
-            {
-                deltaRotation = (rotationInput * (float)PlayerSettingsController.Instance.SmoothRotationSpeed * motorVariables.SmoothRotationMultiplier * Time.fixedDeltaTime);
-            }
-            else
-            {
-                if (Time.time - snapRotationTime >= motorVariables.SnapRotationCooldown)
-                {
-                    snapRotationTime = Time.time;
-
-                    deltaRotation = rotationInput > 0 ? PlayerSettingsController.Instance.SnapRotationDegrees : -PlayerSettingsController.Instance.SnapRotationDegrees;
-                }
-            }
-
-            if (deltaRotation != 0f)
-            {
-                if (PlayerSettingsController.Instance.RoomSetup == RoomSetupEnum.Roomscale)
-                {
-                    TeleportPlayerHead(Camera.main.transform.position, Camera.main.transform.eulerAngles.y + deltaRotation);
-                }
-                else
-                {
-                    TeleportPlayerHead(Camera.main.transform.position, PlayerController_Multiplayer_Client.Instance.YEulerAngle + deltaRotation);
-                }
-            }
         }
 
         private void HandleState()
@@ -353,7 +309,7 @@ namespace VRBattleRoyale.Multiplayer
             if (currentMotorState == PlayerMotorStateEnum.Grounded || ((currentMotorState == PlayerMotorStateEnum.Falling || currentMotorState == PlayerMotorStateEnum.Sliding) &&
                 Time.time - lastGroundedTime < motorVariables.ExtraJumpTimeAfterLeavingGround))
             {
-                if (jumpPressed)
+                if (jump)
                 {
                     GroundContactLost();
 
@@ -364,33 +320,9 @@ namespace VRBattleRoyale.Multiplayer
             }
         }
 
-        private void HandleCrouching()
-        {
-            if (crouching)
-            {
-                if ((currentMotorState != PlayerMotorStateEnum.Grounded && currentMotorState != PlayerMotorStateEnum.Sliding) ||
-                    crouchPressed)
-                {
-                    UnCrouch();
-                }
-            }
-            else
-            {
-                if (crouchPressed && (currentMotorState == PlayerMotorStateEnum.Grounded ||
-                    currentMotorState == PlayerMotorStateEnum.Sliding))
-                {
-                    Crouch();
-                }
-            }
-        }
-
         protected Vector3 CalculateMovementVelocity()
         {
-            var velocityDirection = CalculateMovementDirection();
-
-            var velocity = velocityDirection;
-
-            velocity *= motorVariables.MovementSpeed;
+            var velocity = new Vector3(movementInput.x, 0f, movementInput.y);
 
             if (!IsGrounded)
                 velocity *= motorVariables.AirControl;
@@ -402,25 +334,6 @@ namespace VRBattleRoyale.Multiplayer
             }
 
             return velocity;
-        }
-
-        private Vector3 CalculateMovementDirection()
-        {
-            var direction = Vector3.zero;
-            var yRotation = 0f;
-
-            if (PlayerSettingsController.Instance.MovementOrientationMode == MovementOrientationModeEnum.Hand)
-            {
-                yRotation = PlayerController_Multiplayer_Client.Instance.CurrentVRRig.MoveHand.eulerAngles.y;
-            }
-            else
-            {
-                yRotation = Camera.main.transform.eulerAngles.y;
-            }
-
-            var movementInput = PlayerController_Multiplayer_Client.Instance.CurrentVRRig.MovementInput;
-
-            return Quaternion.Euler(0f, yRotation, 0f) * new Vector3(movementInput.x, 0f, movementInput.y);
         }
 
         private bool IsRisingOrFalling()
@@ -473,54 +386,5 @@ namespace VRBattleRoyale.Multiplayer
                 OnJump(momentum);
             }
         }
-
-        private void Crouch()
-        {
-            crouching = true;
-        }
-
-        private void UnCrouch()
-        {
-            crouching = false;
-        }
-
-        #region Teleports
-        public void TeleportPlayerRoom(Vector3 desiredWorldPositionOfRoom, Quaternion desiredWordRotationOfRoom)
-        {
-            PlayerController_Multiplayer_Client.Instance.Rotation = desiredWordRotationOfRoom;
-            PlayerController_Multiplayer_Client.Instance.Position = desiredWorldPositionOfRoom;
-        }
-
-        public void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera)
-        {
-            TeleportPlayerRoom(desiredWorldPositionOfCamera + (PlayerController_Multiplayer_Client.Instance.Position - Camera.main.transform.position), PlayerController_Multiplayer_Client.Instance.Rotation);
-        }
-
-        public void TeleportPlayerFeet(Vector3 desiredWorldPositionOfPlayerFeet)
-        {
-            TeleportPlayerHead(desiredWorldPositionOfPlayerFeet + (Vector3.up * PlayerHeight));
-        }
-
-        public void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera, float lookAtYEulerAngle)
-        {
-            if (PlayerSettingsController.Instance.RoomSetup == RoomSetupEnum.Roomscale)
-            {
-                TeleportPlayerRoom(desiredWorldPositionOfCamera + (Quaternion.Euler(0f, lookAtYEulerAngle - Camera.main.transform.eulerAngles.y, 0f) *
-                    (PlayerController_Multiplayer_Client.Instance.Position - Camera.main.transform.position)),
-                    Quaternion.Euler(0f, lookAtYEulerAngle - Camera.main.transform.localEulerAngles.y, 0f));
-            }
-            else
-            {
-                TeleportPlayerRoom(desiredWorldPositionOfCamera + (Quaternion.Euler(0f, lookAtYEulerAngle - PlayerController_Multiplayer_Client.Instance.YEulerAngle, 0f) *
-                    (PlayerController_Multiplayer_Client.Instance.Position - Camera.main.transform.position)),
-                    Quaternion.Euler(0f, lookAtYEulerAngle, 0f));
-            }
-        }
-
-        public void TeleportPlayerFeet(Vector3 desiredWorldPositionOfPlayerFeet, float lookAtYEulerAngle)
-        {
-            TeleportPlayerHead(desiredWorldPositionOfPlayerFeet + (Vector3.up * PlayerHeight), lookAtYEulerAngle);
-        }
-        #endregion
     }
 }

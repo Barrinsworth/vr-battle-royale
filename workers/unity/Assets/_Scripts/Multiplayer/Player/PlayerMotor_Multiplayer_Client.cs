@@ -19,15 +19,11 @@ namespace VRBattleRoyale.Multiplayer
         [SerializeField] private float updateFrequency = 0.03333f;
 
         private Vector3 previousPlayerLocalPosition = Vector3.zero;
-        private bool crouching = false;
+        private float timeSinceLastUpdate = 0f;
 
-        private Vector3 clientMovementUpdatePlayerPhysicalDelta = Vector3.zero;
         private Vector3 clientMovementUpdateMovementInput = Vector3.zero;
-        private float clientMovementUpdateTimeDelta = 0f;
-        private int clientMovementUpdateMessageStamp = 1;
         private bool clientMovementUpdateJump = false;
-
-        private float PlayerHeight { get { return Camera.main.transform.localPosition.y - (crouching == true ? motorVariables.CrouchDistance : 0f); } }
+        private bool clientMovementUpdateCrouch = false;
 
         #region Unity Life Cycle
         private void Awake()
@@ -42,13 +38,15 @@ namespace VRBattleRoyale.Multiplayer
 
         private void Update()
         {
-            clientMovementUpdateTimeDelta += Time.deltaTime;
+            timeSinceLastUpdate += Time.deltaTime;
 
             GetInput();
 
-            if (clientMovementUpdateTimeDelta >= updateFrequency)
+            if (timeSinceLastUpdate >= updateFrequency)
             {
                 SendClientMovementUpdate();
+
+                timeSinceLastUpdate = 0f;
             }
 
             previousPlayerLocalPosition = Camera.main.transform.localPosition;
@@ -62,8 +60,6 @@ namespace VRBattleRoyale.Multiplayer
 
         private void GetInput()
         {
-            clientMovementUpdatePlayerPhysicalDelta += Camera.main.transform.localPosition - previousPlayerLocalPosition;
-
             var direction = Vector3.zero;
             var yRotation = 0f;
 
@@ -82,41 +78,35 @@ namespace VRBattleRoyale.Multiplayer
             if (rotatedMovementInput.magnitude > 1f)
                 rotatedMovementInput.Normalize();
 
-            clientMovementUpdateMovementInput += rotatedMovementInput;
+            clientMovementUpdateMovementInput += rotatedMovementInput * motorVariables.MovementSpeed * Time.fixedDeltaTime;
 
             if (!clientMovementUpdateJump)
             {
                 clientMovementUpdateJump = PlayerController_Multiplayer_Client.Instance.CurrentVRRig.JumpButtonPressed;
             }
 
-            if(PlayerController_Multiplayer_Client.Instance.CurrentVRRig.CrouchButtonPressed)
+            if (!clientMovementUpdateCrouch)
             {
-                crouching = !crouching;
+                clientMovementUpdateCrouch = PlayerController_Multiplayer_Client.Instance.CurrentVRRig.CrouchButtonPressed;
             }
         }
 
         private void SendClientMovementUpdate()
         {
             var update = new ClientPlayerMovementUpdate.Update();
-            update.TimeDelta = clientMovementUpdateTimeDelta;
-            update.Height = PlayerHeight;
-            update.Jump = clientMovementUpdateJump;
-            update.MessageStamp = (uint)clientMovementUpdateMessageStamp;
             update.MovementInput = Vector2Util.ConvertToSpatialOSVector2(new Vector2(clientMovementUpdateMovementInput.x, clientMovementUpdateMovementInput.z));
-            update.PlayerPhysicalDelta = Vector2Util.ConvertToSpatialOSVector2(new Vector2(clientMovementUpdatePlayerPhysicalDelta.x, clientMovementUpdatePlayerPhysicalDelta.z));
+            update.Crouch = clientMovementUpdateCrouch;
+            update.Jump = clientMovementUpdateJump;
 
             clientMovementWriter.SendUpdate(update);
-            clientMovementUpdateMessageStamp++;
 
             ResetClientMovementUpdate();
         }
 
         private void ResetClientMovementUpdate()
         {
-            clientMovementUpdateTimeDelta = 0f;
             clientMovementUpdateJump = false;
             clientMovementUpdateMovementInput = Vector3.zero;
-            clientMovementUpdatePlayerPhysicalDelta = Vector3.zero;
         }
     }
 }

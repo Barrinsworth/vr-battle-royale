@@ -166,6 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7657691175727160282}
   - component: {fileID: 2783415237863888923}
+  - component: {fileID: 5608547974200468687}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -204,6 +205,18 @@ MonoBehaviour:
   hmd: {fileID: 3844498808241893786}
   rightHand: {fileID: 1828922440049498283}
   leftHand: {fileID: 6969010580904357235}
+--- !u!114 &5608547974200468687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861457616712419454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 865db3532df38d549b5342a68f08baa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3236497136490381919
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,8 +288,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4792314886634480143}
-  - component: {fileID: 6095514815546333107}
-  - component: {fileID: 4028076650677169398}
   - component: {fileID: 1601679285944207106}
   - component: {fileID: 1259058902078984803}
   m_Layer: 0
@@ -301,43 +312,6 @@ Transform:
   m_Father: {fileID: 7657691175727160282}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6095514815546333107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6016373507092149891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 865db3532df38d549b5342a68f08baa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4028076650677169398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6016373507092149891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d98ace8715c2a184ca85247b18eb0853, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slopeLimit: 70
-  stepHeight: 0.2
-  colliderHeight: 2
-  colliderThickness: 0.1
-  colliderOffset: {x: 0, y: 0.5, z: 0}
-  sensorType: 0
-  sensorLayermask:
-    serializedVersion: 2
-    m_Bits: 512
-  isInDebugMode: 0
-  sensorArrayRows: 1
-  sensorArrayRayCount: 6
-  sensorArrayRowsAreOffset: 0
 --- !u!136 &1601679285944207106
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -18,6 +18,8 @@ namespace VRBattleRoyale.Multiplayer
         [SerializeField] private Transform rightHand;
         [SerializeField] private Transform leftHand;
 
+        public Transform HMD { get { return hmd; } }
+
         #region Unity Life Cycle
         private void OnEnable()
         {

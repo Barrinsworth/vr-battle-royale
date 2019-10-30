@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7657691175727160282}
   - component: {fileID: 360860602349431469}
+  - component: {fileID: 4119428803934329975}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -48,7 +49,22 @@ MonoBehaviour:
   oculusRig: {fileID: 310111098164713553}
   openVRRig: {fileID: 0}
   playstationVRRig: {fileID: 0}
-  playerMotor: {fileID: 5948087747339135445}
+  playerMotor: {fileID: 4119428803934329975}
+  updateFrequency: 0.03333
+--- !u!114 &4119428803934329975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861457616712419454}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a04e546b1eead409a0cdeb16c996a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
+  updateFrequency: 0.03333
 --- !u!1 &7492465580313584087
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +74,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2233553001097723061}
-  - component: {fileID: 5948087747339135445}
   - component: {fileID: 6844620099159604361}
   - component: {fileID: 5529830269475856663}
   - component: {fileID: 5280417686814895677}
@@ -84,22 +99,6 @@ Transform:
   m_Father: {fileID: 7657691175727160282}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5948087747339135445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7492465580313584087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a04e546b1eead409a0cdeb16c996a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
-  mover: {fileID: 6844620099159604361}
-  moverRigidbody: {fileID: 5280417686814895677}
-  headCollider: {fileID: 1441848216613284240}
 --- !u!114 &6844620099159604361
 MonoBehaviour:
   m_ObjectHideFlags: 0

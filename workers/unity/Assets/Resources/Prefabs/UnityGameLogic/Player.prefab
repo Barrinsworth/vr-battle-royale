@@ -87,7 +87,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5300678606013789928}
-  - component: {fileID: 7736160190282086435}
   - component: {fileID: 5041091897953644991}
   - component: {fileID: 2524452918911137045}
   - component: {fileID: 1336332414715444519}
@@ -113,22 +112,6 @@ Transform:
   m_Father: {fileID: 7657691175727160282}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7736160190282086435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 741147718234838477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43db1cfacb9895e49aee19775526059a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
-  mover: {fileID: 5041091897953644991}
-  moverRigidbody: {fileID: 1336332414715444519}
-  headCollider: {fileID: 749551389191036218}
 --- !u!114 &5041091897953644991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7657691175727160282}
   - component: {fileID: 2783415237863888923}
+  - component: {fileID: 2769229067332421439}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -354,6 +338,23 @@ MonoBehaviour:
   hmd: {fileID: 3844498808241893786}
   rightHand: {fileID: 1828922440049498283}
   leftHand: {fileID: 6969010580904357235}
+--- !u!114 &2769229067332421439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861457616712419454}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43db1cfacb9895e49aee19775526059a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerControllerProxy: {fileID: 2783415237863888923}
+  motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
+  mover: {fileID: 5041091897953644991}
+  moverRigidbody: {fileID: 1336332414715444519}
+  headCollider: {fileID: 749551389191036218}
 --- !u!1 &3236497136490381919
 GameObject:
   m_ObjectHideFlags: 0

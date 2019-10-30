@@ -46,6 +46,11 @@ namespace VRBattleRoyale.Singleplayer
         public event PlayerMotorVector3Event OnLand;
 
         #region Unity Life Cycle
+        private void Awake()
+        {
+            savedPlayerLocalPosition = Camera.main.transform.localPosition;
+        }
+
         private void Update()
         {
             TeleportPlayerHead(Vector3.SmoothDamp(Camera.main.transform.position, DesiredHeadPosition, ref smoothVelocity, motorVariables.CameraSmoothTime));
@@ -62,8 +67,6 @@ namespace VRBattleRoyale.Singleplayer
 
             moverRigidbody.MovePosition(moverRigidbody.transform.position + (Quaternion.Euler(0f, PlayerController_Singleplayer.Instance.YEulerAngle, 0f) *
                 new Vector3(deltaPlayerLocalPosition.x, 0f, deltaPlayerLocalPosition.z)));
-
-            moverRigidbody.MoveRotation(PlayerController_Singleplayer.Instance.Rotation);
 
             headCollider.transform.position = DesiredHeadPosition;
 
@@ -177,14 +180,20 @@ namespace VRBattleRoyale.Singleplayer
 
             if (deltaRotation != 0f)
             {
+                var yEulerAngle = 0f;
+
                 if (PlayerSettingsController.Instance.RoomSetup == RoomSetupEnum.Roomscale)
                 {
-                    TeleportPlayerHead(Camera.main.transform.position, Camera.main.transform.eulerAngles.y + deltaRotation);
+                    yEulerAngle = Camera.main.transform.eulerAngles.y + deltaRotation;
                 }
                 else
                 {
-                    TeleportPlayerHead(Camera.main.transform.position, PlayerController_Singleplayer.Instance.YEulerAngle + deltaRotation);
+                    yEulerAngle = PlayerController_Singleplayer.Instance.YEulerAngle + deltaRotation;
                 }
+
+                TeleportPlayerHead(Camera.main.transform.position, yEulerAngle);
+
+                moverRigidbody.MoveRotation(Quaternion.Euler(0f, yEulerAngle, 0f));
             }
         }
 
@@ -382,11 +391,9 @@ namespace VRBattleRoyale.Singleplayer
 
         protected Vector3 CalculateMovementVelocity()
         {
-            var velocityDirection = CalculateMovementDirection();
+            var velocity = CalculateMovementDirection();
 
-            var velocity = velocityDirection;
-
-            velocity *= motorVariables.MovementSpeed;
+            velocity *= motorVariables.MovementSpeed * Time.fixedDeltaTime;
 
             if (!IsGrounded)
                 velocity *= motorVariables.AirControl;
@@ -484,23 +491,18 @@ namespace VRBattleRoyale.Singleplayer
         }
 
         #region Teleports
-        public void TeleportPlayerRoom(Vector3 desiredWorldPositionOfRoom, Quaternion desiredWordRotationOfRoom)
+        private void TeleportPlayerRoom(Vector3 desiredWorldPositionOfRoom, Quaternion desiredWordRotationOfRoom)
         {
             PlayerController_Singleplayer.Instance.Rotation = desiredWordRotationOfRoom;
             PlayerController_Singleplayer.Instance.Position = desiredWorldPositionOfRoom;
         }
 
-        public void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera)
+        private void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera)
         {
             TeleportPlayerRoom(desiredWorldPositionOfCamera + (PlayerController_Singleplayer.Instance.Position - Camera.main.transform.position), PlayerController_Singleplayer.Instance.Rotation);
         }
 
-        public void TeleportPlayerFeet(Vector3 desiredWorldPositionOfPlayerFeet)
-        {
-            TeleportPlayerHead(desiredWorldPositionOfPlayerFeet + (Vector3.up * PlayerHeight));
-        }
-
-        public void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera, float lookAtYEulerAngle)
+        private void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera, float lookAtYEulerAngle)
         {
             if (PlayerSettingsController.Instance.RoomSetup == RoomSetupEnum.Roomscale)
             {
@@ -514,11 +516,6 @@ namespace VRBattleRoyale.Singleplayer
                     (PlayerController_Singleplayer.Instance.Position - Camera.main.transform.position)),
                     Quaternion.Euler(0f, lookAtYEulerAngle, 0f));
             }
-        }
-
-        public void TeleportPlayerFeet(Vector3 desiredWorldPositionOfPlayerFeet, float lookAtYEulerAngle)
-        {
-            TeleportPlayerHead(desiredWorldPositionOfPlayerFeet + (Vector3.up * PlayerHeight), lookAtYEulerAngle);
         }
         #endregion
     }

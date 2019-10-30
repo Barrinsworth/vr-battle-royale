@@ -4,9 +4,6 @@ import "vector2.schema";
 component ClientPlayerMovementUpdate {
   id = 21002;
   Vector2 movement_input = 1;
-  Vector2 player_physical_delta = 2;
-  float height = 3;
-  float time_delta = 4;
-  uint32 message_stamp = 5;
-  bool jump = 6;
+  bool crouch = 2;
+  bool jump = 3;
 }
