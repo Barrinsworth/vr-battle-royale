@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
   MoveHand: 0
-  RotationMode: 1
+  RotationMode: 0
   SnapRotationDegrees: 30
   SmoothRotationSpeed: 5
   InteractionButtonMode: 0
