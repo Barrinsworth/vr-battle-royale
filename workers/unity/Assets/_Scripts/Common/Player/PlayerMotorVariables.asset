@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28f9c7acf0421043b5623b2f19ce6bb, type: 3}
   m_Name: PlayerMotorVariables
   m_EditorClassIdentifier: 
-  MovementSpeed: 600
+  MovementSpeed: 650
   JumpSpeed: 7
   JumpDuration: 0.2
   ExtraJumpTimeAfterLeavingGround: 0.15

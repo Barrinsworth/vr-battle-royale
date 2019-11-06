@@ -67,13 +67,6 @@ namespace VRBattleRoyale.Multiplayer
 
         private void Update()
         {
-#if UNITY_EDITOR
-            if(CurrentVRRig.LeftHandControllerInput.TriggerPrimaryDown)
-            {
-                UnityEditor.EditorApplication.isPaused = true;
-            }
-#endif
-
             timeSinceLastAnchorUpdate += Time.deltaTime;
 
             if(timeSinceLastAnchorUpdate >= anchorsUpdateFrequency)
