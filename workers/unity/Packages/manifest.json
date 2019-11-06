@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.inputsystem": "1.0.0-preview.2",
     "com.unity.mobile.android-logcat": "1.0.0",
     "com.unity.package-manager-ui": "2.2.0",
     "com.unity.physics": "0.2.4-preview",
@@ -9,9 +10,9 @@
     "com.unity.rendering.hybrid": "0.1.1-preview",
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.ugui": "1.0.0",
-    "com.unity.xr.oculus.android": "1.38.3",
-    "com.unity.xr.oculus.standalone": "1.38.3",
-    "com.unity.xr.openvr.standalone": "1.0.5",
+    "com.unity.xr.legacyinputhelpers": "2.0.6",
+    "com.unity.xr.management": "3.0.3",
+    "com.unity.xr.oculus": "0.8.4-preview",
     "io.improbable.gdk.buildsystem": "0.2.10",
     "io.improbable.gdk.core": "0.2.10",
     "io.improbable.gdk.debug": "0.2.10",

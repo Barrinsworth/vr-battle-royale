@@ -72,9 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 151390643214340873}
-  - component: {fileID: 151390643224066759}
-  - component: {fileID: 151390643224066765}
-  - component: {fileID: 8291810045587779909}
+  - component: {fileID: 2067287477255174913}
   m_Layer: 0
   m_Name: OculusCameraRig
   m_TagString: Untagged
@@ -97,7 +95,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &151390643224066759
+--- !u!114 &2067287477255174913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,87 +104,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 151390643214372649}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df9f338034892c44ebb62d97894772f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  usePerEyeCameras: 0
-  useFixedUpdateForTracking: 0
-  disableEyeAnchorCameras: 0
---- !u!114 &151390643224066765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151390643214372649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e933e81d3c20c74ea6fdc708a67e3a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  queueAhead: 1
-  useRecommendedMSAALevel: 1
-  _monoscopic: 0
-  enableAdaptiveResolution: 0
-  minRenderScale: 0.7
-  maxRenderScale: 1
-  _headPoseRelativeOffsetRotation: {x: 0, y: 0, z: 0}
-  _headPoseRelativeOffsetTranslation: {x: 0, y: 0, z: 0}
-  profilerTcpPort: 32419
-  expandMixedRealityCapturePropertySheet: 0
-  enableMixedReality: 0
-  compositionMethod: 0
-  extraHiddenLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  externalCompositionBackdropColorRift: {r: 0, g: 1, b: 0, a: 1}
-  externalCompositionBackdropColorQuest: {r: 0, g: 0, b: 0, a: 0}
-  capturingCameraDevice: 0
-  flipCameraFrameHorizontally: 0
-  flipCameraFrameVertically: 0
-  handPoseStateLatency: 0
-  sandwichCompositionRenderLatency: 0
-  sandwichCompositionBufferedFrames: 8
-  chromaKeyColor: {r: 0, g: 1, b: 0, a: 1}
-  chromaKeySimilarity: 0.6
-  chromaKeySmoothRange: 0.03
-  chromaKeySpillRange: 0.06
-  useDynamicLighting: 0
-  depthQuality: 1
-  dynamicLightingSmoothFactor: 8
-  dynamicLightingDepthVariationClampingValue: 0.001
-  virtualGreenScreenType: 0
-  virtualGreenScreenTopY: 10
-  virtualGreenScreenBottomY: -10
-  virtualGreenScreenApplyDepthCulling: 0
-  virtualGreenScreenDepthTolerance: 0.2
-  mrcActivationMode: 0
-  _trackingOriginType: 1
-  usePositionTracking: 1
-  useRotationTracking: 1
-  useIPDInPositionTracking: 1
-  resetTrackerOnLoad: 0
-  AllowRecenter: 1
-  _reorientHMDOnControllerRecenter: 1
-  LateControllerUpdate: 1
---- !u!114 &8291810045587779909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151390643214372649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0481c6e5d4ca84e4099e9cf959852f74, type: 3}
+  m_Script: {fileID: 11500000, guid: 17efb3e3e900329438a7da11e59508f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hmdTransform: {fileID: 151390643214340879}
   leftHandAnchorTransform: {fileID: 151390643214258911}
   rightHandAnchorTransform: {fileID: 151390643214264027}
   fovBlinders: {fileID: 3863971488415981431}
-  leftHandControllerInput: {fileID: 3267858555011298021}
-  rightHandControllerInput: {fileID: 5057847087899874377}
+  smoothRotationMultiplier: 30
+  snapRotationCooldown: 0.3
 --- !u!1 &151390643214372651
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +354,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 151390643214258911}
-  - component: {fileID: 3267858555011298021}
   m_Layer: 0
   m_Name: LeftHandAnchor
   m_TagString: Untagged
@@ -453,19 +378,6 @@ Transform:
   m_Father: {fileID: 151390643214273099}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3267858555011298021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151390643214377841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e522aefbd362fbf4a8be64d88634bcea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ovrController: 1
 --- !u!1 &151390643214382565
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +387,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 151390643214264027}
-  - component: {fileID: 5057847087899874377}
   m_Layer: 0
   m_Name: RightHandAnchor
   m_TagString: Untagged
@@ -500,19 +411,6 @@ Transform:
   m_Father: {fileID: 151390643214273099}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5057847087899874377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151390643214382565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e522aefbd362fbf4a8be64d88634bcea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ovrController: 2
 --- !u!1 &151390643214572391
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +700,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ccf60c04426cb48976a5648309b339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeInTime: 0.2
+  fadeOutTime: 0.1
   outterBounds: {x: 1900, y: 1600}
   innerBoundsMax: {x: 1900, y: 1600}
   innerBoundsMin: {x: 800, y: 800}

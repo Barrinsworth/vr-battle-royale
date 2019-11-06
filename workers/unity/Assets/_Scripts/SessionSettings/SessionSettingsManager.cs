@@ -52,7 +52,7 @@ namespace VRBattleRoyale
 
             if(sessionSettings.HMDType == HMDTypeEnum.OculusQuest)
             {
-                Time.fixedDeltaTime = 1 / 75f;
+                Time.fixedDeltaTime = 1 / 72f;
             }
             else if (sessionSettings.HMDType == HMDTypeEnum.OculusRift)
             {

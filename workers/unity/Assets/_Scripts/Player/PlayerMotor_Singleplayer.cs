@@ -60,7 +60,7 @@ namespace VRBattleRoyale
             var deltaPlayerLocalPosition = Camera.main.transform.localPosition - savedPlayerLocalPosition;
             deltaPlayerLocalPosition.y = 0f;
 
-            moverRigidbody.MovePosition(moverRigidbody.transform.position + (Quaternion.Euler(0f, PlayerManager.Instance.CurrentVRRig.transform.eulerAngles.y, 0f) *
+            moverRigidbody.MovePosition(moverRigidbody.transform.position + (Quaternion.Euler(0f, PlayerManager.Instance.transform.eulerAngles.y, 0f) *
                 new Vector3(deltaPlayerLocalPosition.x, 0f, deltaPlayerLocalPosition.z)));
 
             headCollider.transform.position = DesiredHeadPosition;
@@ -85,11 +85,11 @@ namespace VRBattleRoyale
 
             if (velocity.x != 0f || velocity.y != 0f || velocity.z != 0)
             {
-                PlayerManager.Instance.CurrentVRRig.FOVBlinders.FadeBlindersIn();
+                PlayerManager.Instance.FOVBlinders.FadeBlindersIn();
             }
             else
             {
-                PlayerManager.Instance.CurrentVRRig.FOVBlinders.FadeBlindersOut();
+                PlayerManager.Instance.FOVBlinders.FadeBlindersOut();
             }
 
             savedVelocity = velocity;
@@ -111,10 +111,10 @@ namespace VRBattleRoyale
         {
             if (!jumpPressed)
             {
-                jumpPressed = PlayerManager.Instance.CurrentVRRig.JumpButtonPressed;
+                jumpPressed = PlayerManager.Instance.JumpButtonPressed;
             }
 
-            if (PlayerManager.Instance.CurrentVRRig.CrouchButtonPressed)
+            if (PlayerManager.Instance.CrouchButtonPressed)
             {
                 if (crouching)
                 {
@@ -159,7 +159,7 @@ namespace VRBattleRoyale
 
         private void HandleRotation()
         {
-            var rotationInput = PlayerManager.Instance.CurrentVRRig.RotationInput;
+            var rotationInput = PlayerManager.Instance.RotationInput;
 
             if(rotationInput == 0f)
             {
@@ -192,7 +192,7 @@ namespace VRBattleRoyale
                 }
                 else
                 {
-                    yEulerAngle = PlayerManager.Instance.CurrentVRRig.transform.eulerAngles.y + deltaRotation;
+                    yEulerAngle = PlayerManager.Instance.transform.eulerAngles.y + deltaRotation;
                 }
 
                 TeleportPlayerHead(Camera.main.transform.position, yEulerAngle);
@@ -396,14 +396,14 @@ namespace VRBattleRoyale
 
             if (PlayerSettingsManager.Instance.MovementOrientationMode == MovementOrientationModeEnum.Hand)
             {
-                yRotation = PlayerManager.Instance.CurrentVRRig.MoveHand.eulerAngles.y;
+                yRotation = PlayerManager.Instance.MoveHand.eulerAngles.y;
             }
             else
             {
                 yRotation = Camera.main.transform.eulerAngles.y;
             }
 
-            var movementInput = PlayerManager.Instance.CurrentVRRig.MovementInput;
+            var movementInput = PlayerManager.Instance.MovementInput;
             var rotatedMovementInput = Quaternion.Euler(0f, yRotation, 0f) * new Vector3(movementInput.x, 0f, movementInput.y);
 
             if (rotatedMovementInput.magnitude > 1f)
@@ -475,14 +475,14 @@ namespace VRBattleRoyale
         #region Teleports
         private void TeleportPlayerRoom(Vector3 desiredWorldPositionOfRoom, Quaternion desiredWordRotationOfRoom)
         {
-            PlayerManager.Instance.CurrentVRRig.transform.rotation = desiredWordRotationOfRoom;
-            PlayerManager.Instance.CurrentVRRig.transform.position = desiredWorldPositionOfRoom;
+            PlayerManager.Instance.transform.rotation = desiredWordRotationOfRoom;
+            PlayerManager.Instance.transform.position = desiredWorldPositionOfRoom;
         }
 
         private void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera)
         {
-            TeleportPlayerRoom(desiredWorldPositionOfCamera + (PlayerManager.Instance.CurrentVRRig.transform.position - Camera.main.transform.position),
-                PlayerManager.Instance.CurrentVRRig.transform.rotation);
+            TeleportPlayerRoom(desiredWorldPositionOfCamera + (PlayerManager.Instance.transform.position - Camera.main.transform.position),
+                PlayerManager.Instance.transform.rotation);
         }
 
         private void TeleportPlayerHead(Vector3 desiredWorldPositionOfCamera, float lookAtYEulerAngle)
@@ -490,13 +490,13 @@ namespace VRBattleRoyale
             if (PlayerSettingsManager.Instance.RoomSetup == RoomSetupEnum.Roomscale)
             {
                 TeleportPlayerRoom(desiredWorldPositionOfCamera + (Quaternion.Euler(0f, lookAtYEulerAngle - Camera.main.transform.eulerAngles.y, 0f) *
-                    (PlayerManager.Instance.CurrentVRRig.transform.position - Camera.main.transform.position)),
+                    (PlayerManager.Instance.transform.position - Camera.main.transform.position)),
                     Quaternion.Euler(0f, lookAtYEulerAngle - Camera.main.transform.localEulerAngles.y, 0f));
             }
             else
             {
-                TeleportPlayerRoom(desiredWorldPositionOfCamera + (Quaternion.Euler(0f, lookAtYEulerAngle - PlayerManager.Instance.CurrentVRRig.transform.eulerAngles.y, 0f) *
-                    (PlayerManager.Instance.CurrentVRRig.transform.position - Camera.main.transform.position)),
+                TeleportPlayerRoom(desiredWorldPositionOfCamera + (Quaternion.Euler(0f, lookAtYEulerAngle - PlayerManager.Instance.transform.eulerAngles.y, 0f) *
+                    (PlayerManager.Instance.transform.position - Camera.main.transform.position)),
                     Quaternion.Euler(0f, lookAtYEulerAngle, 0f));
             }
         }

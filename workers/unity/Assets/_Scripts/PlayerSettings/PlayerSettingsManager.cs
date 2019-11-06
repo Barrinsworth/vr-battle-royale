@@ -13,7 +13,7 @@ namespace VRBattleRoyale
         [SerializeField] private PlayerSettings playerSettings;
 
         public delegate void SettingsChangedEvent();
-        public SettingsChangedEvent OnMoveHandChanged;
+        public SettingsChangedEvent OnDominantHandChanged;
         public SettingsChangedEvent OnRotationModeChanged;
         public SettingsChangedEvent OnSnapRotationDegreesChanged;
         public SettingsChangedEvent OnSmoothRotationSpeedChanged;
@@ -23,16 +23,16 @@ namespace VRBattleRoyale
         public SettingsChangedEvent OnFOVBlindersEnabledChanged;
         public SettingsChangedEvent OnFOVBlindersStrengthChanged;
 
-        public HandednessEnum MoveHand
+        public HandednessEnum DominantHand
         {
-            get { return playerSettings.MoveHand; }
+            get { return playerSettings.DominantHand; }
             set
             {
-                playerSettings.MoveHand = value;
+                playerSettings.DominantHand = value;
 
-                if(OnMoveHandChanged != null)
+                if(OnDominantHandChanged != null)
                 {
-                    OnMoveHandChanged();
+                    OnDominantHandChanged();
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace VRBattleRoyale
             {
                 instance = null;
 
-                OnMoveHandChanged = null;
+                OnDominantHandChanged = null;
                 OnRotationModeChanged = null;
                 OnSnapRotationDegreesChanged = null;
                 OnSmoothRotationSpeedChanged = null;

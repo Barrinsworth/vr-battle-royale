@@ -121,7 +121,9 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.0.1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 1595826554897239898, guid: 75628dd1690ec2544bd54521e09a06da, type: 2}
+  - {fileID: 11400000, guid: 9d38c995bebc6b643ab583b2cebefb31, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -149,7 +151,7 @@ PlayerSettings:
       glCacheMaxFileSize: 8388608
     oculus:
       sharedDepthBuffer: 0
-      dashSupport: 1
+      dashSupport: 0
       lowOverheadMode: 1
     enable360StereoCapture: 0
   isWsaHolographicRemotingEnabled: 0
@@ -401,14 +403,11 @@ PlayerSettings:
     m_Automatic: 1
   m_BuildTargetVRSettings:
   - m_BuildTarget: Standalone
-    m_Enabled: 1
-    m_Devices:
-    - Oculus
-    - OpenVR
+    m_Enabled: 0
+    m_Devices: []
   - m_BuildTarget: Android
-    m_Enabled: 1
-    m_Devices:
-    - Oculus
+    m_Enabled: 0
+    m_Devices: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
@@ -647,7 +646,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: 
+    1: UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP
     4: 
     7: 
   platformArchitecture: {}
@@ -750,6 +749,6 @@ PlayerSettings:
   projectName: 
   organizationId: 
   cloudEnabled: 0
-  enableNativePlatformBackendsForNewInputSystem: 0
-  disableOldInputManagerSupport: 0
+  enableNativePlatformBackendsForNewInputSystem: 1
+  disableOldInputManagerSupport: 1
   legacyClampBlendShapeWeights: 1

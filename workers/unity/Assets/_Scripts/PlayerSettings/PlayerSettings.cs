@@ -13,7 +13,7 @@ namespace VRBattleRoyale
         public static int MIN_FOV_BLINDERS_STRENGTH = 1;
         public static int MAX_FOV_BLINDERS_STRENGTH = 10;
 
-        public HandednessEnum MoveHand = HandednessEnum.Left;
+        public HandednessEnum DominantHand = HandednessEnum.Right;
         public RotationModeEnum RotationMode = RotationModeEnum.Snap;
         public int SnapRotationDegrees = 30;
         public float SmoothRotationSpeed = 5;
