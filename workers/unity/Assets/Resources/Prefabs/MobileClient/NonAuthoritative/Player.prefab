@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d0137b90ac06b42919407c5af3a6f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rig: {fileID: 3722536605674486024}
   hmd: {fileID: 3844498808241893786}
   rightHand: {fileID: 1828922440049498283}
   leftHand: {fileID: 6969010580904357235}
@@ -319,7 +320,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6016373507092149891}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22c35a45fac28e4eb8a295407e775b7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.05
@@ -380,7 +381,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6142516611068211618}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22c35a45fac28e4eb8a295407e775b7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

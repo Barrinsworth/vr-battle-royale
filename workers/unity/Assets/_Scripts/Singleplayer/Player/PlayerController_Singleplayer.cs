@@ -21,9 +21,6 @@ namespace VRBattleRoyale.Singleplayer
         private VRRig currentVRRig;
 
         public VRRig CurrentVRRig { get { return currentVRRig; } }
-        public Vector3 Position { get { return CurrentVRRig.transform.position; } set { CurrentVRRig.transform.position = value; } }
-        public Quaternion Rotation { get { return CurrentVRRig.transform.rotation; } set { CurrentVRRig.transform.rotation = value; } }
-        public float YEulerAngle { get { return CurrentVRRig.transform.eulerAngles.y; } }
 
         #region Unity Life Cycle
         private void Awake()

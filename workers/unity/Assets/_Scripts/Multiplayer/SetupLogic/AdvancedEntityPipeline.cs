@@ -70,7 +70,7 @@ namespace VRBattleRoyale.Multiplayer
             Debug.Log("UNCOMMENT!");
             //var serverPosition = entity.GetComponent<ServerMovement.Component>();
             //var position = serverPosition.Latest.Position.ToVector3() + workerOrigin;
-            var position = workerOrigin + new Vector3(UnityEngine.Random.Range(0f, 1f), 0f, UnityEngine.Random.Range(0f, 1f));
+            var position = workerOrigin;
 
             var prefab = owningWorker.WorkerId == workerId ? cachedAuthPlayer : cachedNonAuthPlayer;
             var gameObject = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);

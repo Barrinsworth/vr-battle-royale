@@ -50,7 +50,7 @@ MonoBehaviour:
   openVRRig: {fileID: 0}
   playstationVRRig: {fileID: 0}
   playerMotor: {fileID: 4119428803934329975}
-  updateFrequency: 0.03333
+  anchorsUpdateFrequency: 0.03333
 --- !u!114 &4119428803934329975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +64,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motorVariables: {fileID: 11400000, guid: c9e0108d56dac414795b716877f80c50, type: 2}
-  updateFrequency: 0.03333
+  mover: {fileID: 6844620099159604361}
+  moverRigidbody: {fileID: 5280417686814895677}
+  headCollider: {fileID: 1441848216613284240}
+  movementUpdateFrequency: 0.03333
 --- !u!1 &7492465580313584087
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +134,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7492465580313584087}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22c35a45fac28e4eb8a295407e775b7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.05
@@ -192,7 +195,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7741255822753408068}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22c35a45fac28e4eb8a295407e775b7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
