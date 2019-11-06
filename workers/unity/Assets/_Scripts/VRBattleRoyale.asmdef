@@ -1,0 +1,24 @@
+{
+    "name": "VRBattleRoyale",
+    "references": [
+        "GUID:edb3612c44ad0d24988d387581fd5fbe",
+        "GUID:2462d220cd70f6048a0706d191d5af74",
+        "GUID:09d0b0c8e43bd56409834b050a8a2ceb",
+        "GUID:6e87be7cacbd7264c9a5b9efc59a4030",
+        "GUID:dbbb57cbd9ab0934e9a2838da5d1c491",
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:8819f35a0fc84499b990e90a4ca1911f",
+        "GUID:a5baed0c9693541a5bd947d336ec7659",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:9ded75467e67c354a9195a39f18fd053",
+        "GUID:f64c9ebcd7899c3448a08dc9f9ddbe30"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
