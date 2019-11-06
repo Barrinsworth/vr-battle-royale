@@ -1,0 +1,25 @@
+{
+    "name": "VRBattleRoyale.Multiplayer",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Mobile",
+        "Improbable.Gdk.PlayerLifecycle",
+        "Improbable.Gdk.GameObjectCreation",
+        "Improbable.Gdk.TransformSynchronization",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Unity.Mathematics",
+        "VRBattleRoyale.Common",
+        "VRBattleRoyal.Common.Player",
+        "CharacterMovementFundamentals"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
