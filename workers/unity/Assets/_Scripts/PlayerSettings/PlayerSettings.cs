@@ -14,10 +14,10 @@ namespace VRBattleRoyale
         public static int MAX_FOV_BLINDERS_STRENGTH = 10;
 
         public HandednessEnum DominantHand = HandednessEnum.Right;
+        public InputLayoutEnum InputLayout = InputLayoutEnum.Default;
         public RotationModeEnum RotationMode = RotationModeEnum.Snap;
         public int SnapRotationDegrees = 30;
         public float SmoothRotationSpeed = 5;
-        public InteractionButtonModeEnum InteractionButtonMode = InteractionButtonModeEnum.Grip;
         public MovementOrientationModeEnum MovementOrientationMode = MovementOrientationModeEnum.Hand;
         public RoomSetupEnum RoomSetup = RoomSetupEnum.Roomscale;
         public bool fovBlindersEnabled = true;

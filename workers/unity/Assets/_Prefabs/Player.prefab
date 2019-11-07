@@ -1496,9 +1496,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigTransform: {fileID: 7354055285683926637}
-  hmdTransform: {fileID: 4882189429190550985}
-  leftHandAnchorTransform: {fileID: 4435423800153057864}
-  rightHandAnchorTransform: {fileID: 1778770527211054107}
   fovBlinders: {fileID: 8082845653916898435}
   smoothRotationMultiplier: 30
   snapRotationCooldown: 0.3

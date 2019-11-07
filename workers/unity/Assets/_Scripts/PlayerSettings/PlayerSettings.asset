@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91bc6aa4e049e54595cc2904864431a, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  MoveHand: 0
+  DominantHand: 1
+  InputLayout: 1
   RotationMode: 0
   SnapRotationDegrees: 30
   SmoothRotationSpeed: 5
-  InteractionButtonMode: 0
   MovementOrientationMode: 1
   RoomSetup: 0
   fovBlindersEnabled: 1

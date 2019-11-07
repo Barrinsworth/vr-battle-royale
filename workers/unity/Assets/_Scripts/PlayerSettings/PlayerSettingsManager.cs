@@ -14,10 +14,10 @@ namespace VRBattleRoyale
 
         public delegate void SettingsChangedEvent();
         public SettingsChangedEvent OnDominantHandChanged;
+        public SettingsChangedEvent OnInputLayoutChanged;
         public SettingsChangedEvent OnRotationModeChanged;
         public SettingsChangedEvent OnSnapRotationDegreesChanged;
         public SettingsChangedEvent OnSmoothRotationSpeedChanged;
-        public SettingsChangedEvent OnInteractionButtonModeChanged;
         public SettingsChangedEvent OnMovementOrientationModeChanged;
         public SettingsChangedEvent OnRoomSetupChanged;
         public SettingsChangedEvent OnFOVBlindersEnabledChanged;
@@ -33,6 +33,19 @@ namespace VRBattleRoyale
                 if(OnDominantHandChanged != null)
                 {
                     OnDominantHandChanged();
+                }
+            }
+        }
+        public InputLayoutEnum InputLayout
+        {
+            get { return playerSettings.InputLayout; }
+            set
+            {
+                playerSettings.InputLayout = value;
+
+                if (OnInputLayoutChanged != null)
+                {
+                    OnInputLayoutChanged();
                 }
             }
         }
@@ -88,19 +101,6 @@ namespace VRBattleRoyale
                 if (OnSmoothRotationSpeedChanged != null)
                 {
                     OnSmoothRotationSpeedChanged();
-                }
-            }
-        }
-        public InteractionButtonModeEnum InteractionButtonMode
-        {
-            get { return playerSettings.InteractionButtonMode; }
-            set
-            {
-                playerSettings.InteractionButtonMode = value;
-
-                if (OnInteractionButtonModeChanged != null)
-                {
-                    OnInteractionButtonModeChanged();
                 }
             }
         }
@@ -182,10 +182,10 @@ namespace VRBattleRoyale
                 instance = null;
 
                 OnDominantHandChanged = null;
+                OnInputLayoutChanged = null;
                 OnRotationModeChanged = null;
                 OnSnapRotationDegreesChanged = null;
                 OnSmoothRotationSpeedChanged = null;
-                OnInteractionButtonModeChanged = null;
                 OnMovementOrientationModeChanged = null;
                 OnRoomSetupChanged = null;
                 OnFOVBlindersEnabledChanged = null;

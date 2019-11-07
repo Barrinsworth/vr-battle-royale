@@ -51,8 +51,6 @@ namespace VRBattleRoyale
             TeleportPlayerHead(Vector3.SmoothDamp(Camera.main.transform.position, DesiredHeadPosition, ref smoothVelocity, motorVariables.CameraSmoothTime));
 
             GetInput();
-
-            HandleRotation();
         }
 
         private void FixedUpdate()
@@ -111,10 +109,10 @@ namespace VRBattleRoyale
         {
             if (!jumpPressed)
             {
-                jumpPressed = PlayerManager.Instance.JumpButtonPressed;
+                jumpPressed = InputManager.Instance.JumpInput;
             }
 
-            if (PlayerManager.Instance.CrouchButtonPressed)
+            if (InputManager.Instance.CrouchInput)
             {
                 if (crouching)
                 {
@@ -155,48 +153,6 @@ namespace VRBattleRoyale
             }
 
             mover.RecalculateColliderDimensions();
-        }
-
-        private void HandleRotation()
-        {
-            var rotationInput = PlayerManager.Instance.RotationInput;
-
-            if(rotationInput == 0f)
-            {
-                return;
-            }
-
-            var deltaRotation = 0f;
-
-            if (PlayerSettingsManager.Instance.RotationMode == RotationModeEnum.Smooth)
-            {
-                deltaRotation = (rotationInput * (float)PlayerSettingsManager.Instance.SmoothRotationSpeed * motorVariables.SmoothRotationMultiplier * Time.fixedDeltaTime);
-            }
-            else
-            {
-                if (Time.time - snapRotationTime >= motorVariables.SnapRotationCooldown)
-                {
-                    snapRotationTime = Time.time;
-
-                    deltaRotation = rotationInput > 0 ? PlayerSettingsManager.Instance.SnapRotationDegrees : -PlayerSettingsManager.Instance.SnapRotationDegrees;
-                }
-            }
-
-            if (deltaRotation != 0f)
-            {
-                var yEulerAngle = 0f;
-
-                if (PlayerSettingsManager.Instance.RoomSetup == RoomSetupEnum.Roomscale)
-                {
-                    yEulerAngle = Camera.main.transform.eulerAngles.y + deltaRotation;
-                }
-                else
-                {
-                    yEulerAngle = PlayerManager.Instance.transform.eulerAngles.y + deltaRotation;
-                }
-
-                TeleportPlayerHead(Camera.main.transform.position, yEulerAngle);
-            }
         }
 
         private void HandleState()
@@ -373,7 +329,7 @@ namespace VRBattleRoyale
 
         protected Vector3 CalculateMovementVelocity()
         {
-            var velocity = CalculateMovementDirection();
+            var velocity = InputManager.Instance.MoveInput;
 
             velocity *= motorVariables.MovementSpeed * Time.fixedDeltaTime;
 
@@ -387,29 +343,6 @@ namespace VRBattleRoyale
             }
 
             return velocity;
-        }
-
-        private Vector3 CalculateMovementDirection()
-        {
-            var direction = Vector3.zero;
-            var yRotation = 0f;
-
-            if (PlayerSettingsManager.Instance.MovementOrientationMode == MovementOrientationModeEnum.Hand)
-            {
-                yRotation = PlayerManager.Instance.MoveHand.eulerAngles.y;
-            }
-            else
-            {
-                yRotation = Camera.main.transform.eulerAngles.y;
-            }
-
-            var movementInput = PlayerManager.Instance.MovementInput;
-            var rotatedMovementInput = Quaternion.Euler(0f, yRotation, 0f) * new Vector3(movementInput.x, 0f, movementInput.y);
-
-            if (rotatedMovementInput.magnitude > 1f)
-                rotatedMovementInput.Normalize();
-
-            return rotatedMovementInput;
         }
 
         private bool IsRisingOrFalling()

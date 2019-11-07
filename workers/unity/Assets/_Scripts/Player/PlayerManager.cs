@@ -13,9 +13,6 @@ namespace VRBattleRoyale
         public static PlayerManager Instance { get { return instance; } }
 
         [SerializeField] private Transform rigTransform;
-        [SerializeField] private Transform hmdTransform;
-        [SerializeField] private Transform leftHandAnchorTransform;
-        [SerializeField] private Transform rightHandAnchorTransform;
         [SerializeField] private FOVBlinders fovBlinders;
         [SerializeField] private float smoothRotationMultiplier = 30;
         [SerializeField] private float snapRotationCooldown = 0.3f;
@@ -24,28 +21,7 @@ namespace VRBattleRoyale
         private Entity characterControllerEntity = Entity.Null;
 
         public Transform RigTransform { get { return rigTransform; } }
-        public Transform HMDTransform { get { return hmdTransform; } }
-        public Transform LeftHandAnchorTransform { get { return leftHandAnchorTransform; } }
-        public Transform RightHandAnchorTransform { get { return rightHandAnchorTransform; } }
-        public Transform MoveHand
-        {
-            get
-            {
-                if (PlayerSettingsManager.Instance.DominantHand == HandednessEnum.Left)
-                {
-                    return leftHandAnchorTransform;
-                }
-                else
-                {
-                    return rightHandAnchorTransform;
-                }
-            }
-        }
         public FOVBlinders FOVBlinders { get { return fovBlinders; } }
-        public Vector2 MovementInput { get { return Vector2.zero; } }
-        public float RotationInput { get { return 0f; } }
-        public bool JumpButtonPressed { get { return false; } }
-        public bool CrouchButtonPressed { get { return false; } }
 
         #region Unity Life Cycle
         private void Awake()
@@ -59,25 +35,15 @@ namespace VRBattleRoyale
             instance = this;
         }
 
-        private void OnEnable()
-        {
-            UnityEngine.XR.XRDevice.deviceLoaded += VRDeviceLoaded;   
-        }
-
-        private void Start()
-        {
-            if (UnityEngine.XR.XRDevice.isPresent)
-                VRDeviceLoaded(UnityEngine.XR.XRDevice.model);
-        }
-
         private void Update()
         {
-            HandleRotationInput();
-        }
+            if (!string.IsNullOrEmpty(UnityEngine.XR.XRSettings.loadedDeviceName))
+            {
+                UnityEngine.XR.XRDevice.SetTrackingSpaceType(UnityEngine.XR.TrackingSpaceType.RoomScale);
+                Camera.main.fieldOfView = math.degrees((float)UnityEngine.XR.XRSettings.eyeTextureWidth / UnityEngine.XR.XRSettings.eyeTextureHeight) * 2.0f;
+            }
 
-        private void OnDisable()
-        {
-            UnityEngine.XR.XRDevice.deviceLoaded -= VRDeviceLoaded;
+            HandleRotationInput();
         }
 
         private void OnDestroy()
@@ -90,12 +56,6 @@ namespace VRBattleRoyale
         #endregion
 
         #region Event Listeners
-        private void VRDeviceLoaded(string device)
-        {
-            Debug.Log("LOADED");
-            Camera.main.fieldOfView = math.radians(UnityEngine.XR.XRSettings.eyeTextureWidth / UnityEngine.XR.XRSettings.eyeTextureHeight) * 2.0f;
-        }
-
         public void SetReceivedEntity(Entity entity)
         {
             characterControllerEntity = entity;
@@ -104,7 +64,7 @@ namespace VRBattleRoyale
 
         private void HandleRotationInput()
         {
-            var rotationInput = RotationInput;
+            var rotationInput = InputManager.Instance.RotationInput;
 
             if (rotationInput == 0f)
             {

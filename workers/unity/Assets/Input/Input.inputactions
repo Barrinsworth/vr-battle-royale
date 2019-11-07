@@ -1,12 +1,12 @@
 {
-    "name": "Controls",
+    "name": "Input",
     "maps": [
         {
             "name": "Gameplay",
             "id": "49bce3f6-c492-48a4-9de6-1ae577e295de",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "LeftMove",
                     "type": "Value",
                     "id": "add89d05-23ef-4ab8-a6dd-3d1dbbdb8b94",
                     "expectedControlType": "Vector2",
@@ -14,7 +14,23 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Rotate",
+                    "name": "RightMove",
+                    "type": "Value",
+                    "id": "47d92d3e-252e-4fc9-9222-1c5fc4dccb33",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone",
+                    "interactions": ""
+                },
+                {
+                    "name": "LeftRotate",
+                    "type": "Value",
+                    "id": "580f3af8-1eab-4c42-a43a-ec966e8b1ceb",
+                    "expectedControlType": "Axis",
+                    "processors": "AxisDeadzone",
+                    "interactions": ""
+                },
+                {
+                    "name": "RightRotate",
                     "type": "Value",
                     "id": "4012bc69-d5c7-4419-94b5-ba71a8752d3f",
                     "expectedControlType": "Axis",
@@ -22,7 +38,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Jump",
+                    "name": "LeftJump",
                     "type": "Button",
                     "id": "7e556f27-ba95-4816-af17-31c65b3446c1",
                     "expectedControlType": "",
@@ -30,10 +46,50 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Crouch",
+                    "name": "RightJump",
+                    "type": "Button",
+                    "id": "18d842e5-26f6-4b93-a58d-5ee34055d45a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LeftCrouch",
                     "type": "Button",
                     "id": "48381cef-3c4f-43ad-ba65-316558bd41c3",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RightCrouch",
+                    "type": "Button",
+                    "id": "bd08ec49-4de0-4997-b128-ef341c761299",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "HMDRotation",
+                    "type": "Value",
+                    "id": "fbb3c228-13e5-49c6-9af8-c7986d1748c9",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LeftHandRotation",
+                    "type": "Value",
+                    "id": "4b8fe508-7994-4530-b196-ddc01ab66634",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RightHandRotation",
+                    "type": "Value",
+                    "id": "383c75ca-62ac-4d06-83d8-85e795b6fff1",
+                    "expectedControlType": "Quaternion",
                     "processors": "",
                     "interactions": ""
                 }
@@ -46,7 +102,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Oculus",
-                    "action": "Move",
+                    "action": "LeftMove",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -57,7 +113,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Oculus",
-                    "action": "Rotate",
+                    "action": "RightRotate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -68,7 +124,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Oculus",
-                    "action": "Jump",
+                    "action": "RightJump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -79,7 +135,84 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Oculus",
-                    "action": "Crouch",
+                    "action": "RightCrouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "780ed1ce-7896-47da-ab0c-d1eca73daa24",
+                    "path": "<OculusTouchController>{RightHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Oculus",
+                    "action": "RightMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c4eb095-27ee-4d05-b822-bf1c5979ff20",
+                    "path": "<OculusTouchController>{LeftHand}/thumbstick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Oculus",
+                    "action": "LeftRotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ccdb6194-854d-4aa5-85f1-da7a9c789f87",
+                    "path": "<OculusTouchController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Oculus",
+                    "action": "LeftCrouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c02eab1-4fe8-41d6-95e6-22697e29be8c",
+                    "path": "<OculusTouchController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Oculus",
+                    "action": "LeftJump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f538cfc2-dfff-4d24-960a-63cad584913a",
+                    "path": "<OculusHMD>/centerEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Oculus",
+                    "action": "HMDRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0ec29ea2-5efe-44b9-b225-1fa487d1316d",
+                    "path": "<OculusTouchController>{LeftHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Oculus",
+                    "action": "LeftHandRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "119194ba-9200-4670-bb32-94718891a34e",
+                    "path": "<OculusTouchController>{RightHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Oculus",
+                    "action": "RightHandRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
